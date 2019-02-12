@@ -1,2 +1,4 @@
-.ideal/
+venv/
+.idea/
 *.iml
+

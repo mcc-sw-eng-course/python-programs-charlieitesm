@@ -10,10 +10,11 @@ Email: a01181616@itesm.mx
 Date: February 12th 2019
 """
 import unittest
+
 from assignments.l4.programs_under_test import decimal_2_roman as exercise9_roman
 
 
-class exercise9_romanTest(unittest.TestCase):
+class Exercise9RomanTest(unittest.TestCase):
 
     def test_simple_numbers(self):
         self.assertEqual("I", exercise9_roman(1))

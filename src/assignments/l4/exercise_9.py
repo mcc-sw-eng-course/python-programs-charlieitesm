@@ -1,9 +1,6 @@
-
-
-# Exercise 9
 def decimal_2_roman(n: int) -> str:
 
-    ROMAN_NUMERALS = {
+    roman_numerals = {
         "1": "I",
         "5": "V",
         "10": "X",
@@ -13,7 +10,7 @@ def decimal_2_roman(n: int) -> str:
         "1000": "M"
     }
 
-    OVERLINE_CHAR = "\u0305"
+    overline_char = "\u0305"
 
     if type(n) is not int:
         raise ValueError("Input number should be an integer number.")
@@ -59,20 +56,20 @@ def decimal_2_roman(n: int) -> str:
             # We toy around with the idea that there are numbers for the units and multiples of 5 in a power of ten
             #  we then address the rules that deal with all 9 different digits
             if current_digit == 4:
-                first_part = ROMAN_NUMERALS[str(power_of_ten)]
-                second_part = ROMAN_NUMERALS[str(5 * power_of_ten)]
+                first_part = roman_numerals[str(power_of_ten)]
+                second_part = roman_numerals[str(5 * power_of_ten)]
                 roman_num.append(first_part)
                 roman_num.append(second_part)
 
             elif current_digit == 9:
-                first_part = ROMAN_NUMERALS[str(power_of_ten)]
-                second_part = ROMAN_NUMERALS[str(10 * power_of_ten)]
+                first_part = roman_numerals[str(power_of_ten)]
+                second_part = roman_numerals[str(10 * power_of_ten)]
                 roman_num.append(first_part)
                 roman_num.append(second_part)
 
             # Covers 1, 2, 3
             elif current_digit < 5:
-                unit_numeral = ROMAN_NUMERALS["1000"] if should_use_M_instead_of_I else ROMAN_NUMERALS[str(power_of_ten)]
+                unit_numeral = roman_numerals["1000"] if should_use_M_instead_of_I else roman_numerals[str(power_of_ten)]
                 counter = current_digit
 
                 while counter > 0:
@@ -82,16 +79,16 @@ def decimal_2_roman(n: int) -> str:
 
             # Covers 6, 7, 8
             elif current_digit > 5:
-                roman_num.append(ROMAN_NUMERALS[str(5 * power_of_ten)])
+                roman_num.append(roman_numerals[str(5 * power_of_ten)])
                 counter = current_digit
 
                 while (counter - 5) > 0:
-                    roman_num.append(ROMAN_NUMERALS[str(power_of_ten)])
+                    roman_num.append(roman_numerals[str(power_of_ten)])
                     counter -= 1
 
             # The digit is equal to 5
             else:
-                roman_num.append(ROMAN_NUMERALS[str(power_of_ten * 5)])
+                roman_num.append(roman_numerals[str(power_of_ten * 5)])
 
             if number_of_overlines_1000 > 0:
                 overlines_to_add = number_of_overlines_1000
@@ -101,7 +98,7 @@ def decimal_2_roman(n: int) -> str:
                 if should_use_M_instead_of_I and 1 <= current_digit <= 3:
                     overlines_to_add -= 1
 
-                overlines = [OVERLINE_CHAR for n_overlines in range(overlines_to_add)]
+                overlines = [overline_char for n_overlines in range(overlines_to_add)]
                 overlines = "".join(overlines)
 
                 # Add the required number of overlines for each of the character that need to be multiplied by 1000

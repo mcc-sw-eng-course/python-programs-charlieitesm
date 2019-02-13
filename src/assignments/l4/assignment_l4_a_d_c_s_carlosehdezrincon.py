@@ -42,6 +42,8 @@ class Exercise9RomanTest(unittest.TestCase):
         self.assertEqual("DCXCIX", exercise9_roman(699))
         self.assertEqual("MMXIX", exercise9_roman(2019))
         self.assertEqual("MCMXCI", exercise9_roman(1991))
+        self.assertEqual("MMM", exercise9_roman(3000))
+        self.assertEqual("\u0305I\u0305V", exercise9_roman(4000))
 
     def test_invalid_value(self):
         # Rene's method expects a string saying 'Invalid' for invalid values, whereas I expect

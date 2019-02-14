@@ -9,19 +9,181 @@ Email: 47310270+charlieitesm@users.noreply.github.com
 
 Date: February 12th 2019
 """
-import unittest
 import json
 import os
+import statistics
+import unittest
 
-from assignments.l4.exercise_9 import decimal_2_roman as exercise9_roman
+from assignments.l4.exercise_14 import MyPowerList as exercise14_MyPowerList
+from assignments.l4.exercise_15 import User as exercise15_User
+from assignments.l4.exercise_15 import UsersDatabase as exercise15_UsersDataBase
+from assignments.l4.exercise_8 import median as exercise8_median
+from assignments.l4.exercise_8 import npercentile as exercise8_npercentile
+from assignments.l4.exercise_8 import nquartile as exercise8_nquartile
 from assignments.l4.exercise_8 import sample_mean as exercise8_sample_mean
 from assignments.l4.exercise_8 import sample_standard_deviation as exercise8_sample_std_dev
-from assignments.l4.exercise_8 import median as exercise8_median
-from assignments.l4.exercise_8 import nquartile as exercise8_nquartile
-from assignments.l4.exercise_8 import npercentile as exercise8_npercentile
-from assignments.l4.exercise_14 import MyPowerList as exercise14_MyPowerList
-from assignments.l4.exercise_15 import UsersDatabase as exercise15_UsersDataBase
-from assignments.l4.exercise_15 import User as exercise15_User
+from assignments.l4.exercise_9 import decimal_2_roman as exercise9_roman
+
+
+# Exercise8
+class Exercise8Test(unittest.TestCase):
+
+    def test_sample_mean_invalid_inputs(self):
+        test_cases = [
+            ["a", "b"],
+            [True, False],
+            5
+        ]
+        for test in test_cases:
+            with self.assertRaises(TypeError):
+                exercise8_sample_mean(test)
+
+    def test_sample_mean_valid_inputs(self):
+        test = [1, 2, 3, 4]
+        expected = statistics.mean(test)
+        result = exercise8_sample_mean(test)
+        self.assertEqual(expected, result)
+
+        test = []
+        expected = 0.0
+        result = exercise8_sample_mean(test)
+        self.assertEqual(expected, result)
+
+        test = [3.0, 4.0, 5.1]
+        expected = statistics.mean(test)
+        result = exercise8_sample_mean(test)
+        self.assertEqual(expected, result)
+
+        test = [5]
+        self.assertEqual(5.0, exercise8_sample_mean(test))
+
+        test = [0]
+        self.assertEqual(0.0, exercise8_sample_mean(test))
+
+        test = [-2, -3, -4]
+        expected = statistics.mean(test)
+        result = exercise8_sample_mean(test)
+        self.assertEqual(expected, result)
+
+    def test_sample_std_dev_invalid_input(self):
+        test_cases = [
+            ["a", "b"],
+            [True, False],
+            5
+        ]
+        for test in test_cases:
+            with self.assertRaises(TypeError):
+                exercise8_sample_std_dev(test)
+
+    def test_sample_std_dev_valid_input(self):
+        test = [1, 2, 3, 4]
+        expected = statistics.stdev(test)
+        result = exercise8_sample_std_dev(test)
+        self.assertEqual(expected, result)
+
+        test = []
+        expected = 0.0
+        result = exercise8_sample_std_dev(test)
+        self.assertEqual(expected, result)
+
+        test = [3.0, 4.0, 5.1]
+        expected = statistics.stdev(test)
+        result = exercise8_sample_std_dev(test)
+        self.assertEqual(expected, result)
+
+        test = [5]
+        self.assertEqual(0, exercise8_sample_std_dev(test))
+
+        test = [0]
+        self.assertEqual(0, exercise8_sample_std_dev(test))
+
+        test = [-2, -3, -4]
+        expected = statistics.stdev(test)
+        result = exercise8_sample_std_dev(test)
+        self.assertEqual(expected, result)
+
+    def test_median_invalid_inputs(self):
+        test_cases = [
+            ["a", "b"],
+            [True, False],
+            5
+        ]
+        for test in test_cases:
+            with self.assertRaises(TypeError):
+                exercise8_median(test)
+
+    def test_median_valid_inputs(self):
+        test = [1, 2, 3, 4]
+        expected = statistics.median(test)
+        result = exercise8_median(test)
+        self.assertEqual(expected, result)
+
+        test = []
+        expected = 0.0
+        result = exercise8_median(test)
+        self.assertEqual(expected, result)
+
+        test = [3.0, 4.0, 5.1]
+        expected = statistics.median(test)
+        result = exercise8_median(test)
+        self.assertEqual(expected, result)
+
+        test = [5]
+        self.assertEqual(5.0, exercise8_median(test))
+
+        test = [0]
+        self.assertEqual(0.0, exercise8_median(test))
+
+        test = [-2, -3, -4]
+        expected = statistics.median(test)
+        result = exercise8_median(test)
+        self.assertEqual(expected, result)
+
+    def test_npercentile_invalid_inputs(self):
+        test_cases = [
+            ["a", "b"],
+            [True, False],
+            5
+        ]
+        for test in test_cases:
+            with self.assertRaises(TypeError):
+                exercise8_npercentile(test, 25)
+
+        with self.assertRaises(ValueError):
+            exercise8_npercentile([2, 3, 4, 5], 0)
+
+        with self.assertRaises(ValueError):
+            exercise8_npercentile([2, 3, 4, 5], 100)
+
+    def test_npercentile_valid_inputs(self):
+        test = [x for x in range(1, 100)]
+
+        self.assertEqual(25.0, exercise8_npercentile(test, 25))
+        self.assertEqual(40.0, exercise8_npercentile(test, 40))
+        self.assertEqual(90.0, exercise8_npercentile(test, 90))
+        self.assertEqual(0.0, exercise8_npercentile([], 90))
+        self.assertEqual(0.0, exercise8_npercentile(None, 90))
+
+        test = [x for x in range(1, 11)]
+        self.assertEqual(2.75, exercise8_npercentile(test, 25))
+
+    def test_nquartile_invalid_inputs(self):
+        test_cases = [
+            ["a", "b"],
+            [True, False],
+            5
+        ]
+        for test in test_cases:
+            with self.assertRaises(TypeError):
+                exercise8_nquartile(test, 25)
+
+    def test_nquartile_valid_input(self):
+        test = [x for x in range(1, 100)]
+        result = exercise8_nquartile(test)
+
+        self.assertEqual(25, result[0])
+        self.assertEqual(50, result[1])
+        self.assertEqual(75, result[2])
 
 
 # Exercise9

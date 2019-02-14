@@ -195,6 +195,38 @@ class UserDatabaseTest(unittest.TestCase):
             self.assertEqual(user_before_serialization.phone, file_user.get("phone"))
             self.assertEqual(user_before_serialization.email, file_user.get("email"))
 
+    def test_save_to_file_no_extension(self):
+        name = "Test New User"
+        address = "Test Address"
+        phone = "555 332 1234"
+        email = "mail@itesm.mx"
+        self.under_test.new_user(name, address, phone, email)
+        self.under_test.new_user(name, address, phone, email)
+
+        db_before_serialization = self.under_test.users
+
+        # Remove the extension from the file, the class should add it later
+        self.under_test.save_to_text_file(UserDatabaseTest.TEST_JSON_FILENAME[:-5])
+
+        # Check that the file exists in the filesystem
+        self.assertTrue(os.path.exists(UserDatabaseTest.TEST_JSON_FILENAME))
+
+        with open(UserDatabaseTest.TEST_JSON_FILENAME, "r") as file:
+            data = json.load(file)
+
+        for k in data.keys():
+            file_user = data.get(k)
+            user_before_serialization = db_before_serialization.get(k)
+
+            self.assertIsNotNone(file_user)
+            self.assertIsNotNone(user_before_serialization)
+
+            self.assertEqual(user_before_serialization.user_id, file_user.get("user_id"))
+            self.assertEqual(user_before_serialization.name, file_user.get("name"))
+            self.assertEqual(user_before_serialization.address, file_user.get("address"))
+            self.assertEqual(user_before_serialization.phone, file_user.get("phone"))
+            self.assertEqual(user_before_serialization.email, file_user.get("email"))
+
     def test_save_to_file_with_empty_filename(self):
         # An empty filename should raise a ValueError
         with self.assertRaises(ValueError):
@@ -202,17 +234,6 @@ class UserDatabaseTest(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self.under_test.save_to_text_file(None)
-
-    def test_save_to_file_no_extension(self):
-        # If we provide a filename with no .json extension, one should be provided
-        filename_no_extension = UserDatabaseTest.TEST_JSON_FILENAME[:-5]
-
-        self.assertFalse(".json" in filename_no_extension.lower())
-
-        self.under_test.save_to_text_file(filename_no_extension)
-
-        # Even though we removed the extension, the file should've been created with it
-        self.assertTrue(os.path.exists(UserDatabaseTest.TEST_JSON_FILENAME))
 
     def test_load_from_file(self):
         user_id = 7
@@ -236,6 +257,39 @@ class UserDatabaseTest(unittest.TestCase):
             json.dump(test_case, file)
 
         self.under_test.load_from_file(UserDatabaseTest.TEST_JSON_FILENAME)
+        self.assertTrue(len(self.under_test.users) == 1)
+
+        db_user = self.under_test.users.get(str(user_id))
+        self.assertIsInstance(db_user, exercise15_User)
+        self.assertEqual(user_id, db_user.user_id)
+        self.assertEqual(name, db_user.name)
+        self.assertEqual(address, db_user.address)
+        self.assertEqual(phone, db_user.phone)
+        self.assertEqual(email, db_user.email)
+
+    def test_load_from_file_no_extension(self):
+        user_id = 7
+        name = "Test New User"
+        address = "Test Address"
+        phone = "555 332 1234"
+        email = "mail@itesm.mx"
+
+        test_case = {
+            str(user_id): {
+                "user_id": user_id,
+                "name": name,
+                "address": address,
+                "phone": phone,
+                "email": email
+            }
+        }
+
+        # Simulate a file with a previous MyPowerList
+        with open(UserDatabaseTest.TEST_JSON_FILENAME, "w") as file:
+            json.dump(test_case, file)
+
+        # Remove the extension from the filename
+        self.under_test.load_from_file(UserDatabaseTest.TEST_JSON_FILENAME[:-5])
         self.assertTrue(len(self.under_test.users) == 1)
 
         db_user = self.under_test.users.get(str(user_id))

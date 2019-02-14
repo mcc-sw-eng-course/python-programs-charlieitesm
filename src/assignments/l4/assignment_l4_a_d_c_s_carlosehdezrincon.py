@@ -3,9 +3,9 @@ ITESM - MCC
 Analysis, Design and Construction of Software
 Assignment L4 Exercise 21-24
 
-Author: Carlos Eduardo Hernandez Rincon
-Student ID: A01181616
-Email: a01181616@itesm.mx
+Author: Carlos E. Hdz Rincon
+Student ID: A****1616
+Email: 47310270+charlieitesm@users.noreply.github.com
 
 Date: February 12th 2019
 """

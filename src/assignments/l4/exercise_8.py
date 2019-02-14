@@ -5,6 +5,10 @@ import math
 def sample_mean(data_set: list) -> float:
     if not data_set:
         return 0.0
+
+    # This will raise a TypeError if the list contains non-numeric values
+    validate_input_number_list(data_set)
+
     sum_of_elements = 0
 
     for x in data_set:
@@ -17,6 +21,9 @@ def sample_standard_deviation(data_set: list) -> float:
     # We need at least 2 data points to calculate the standard deviation
     if not data_set or len(data_set) < 2:
         return 0.0
+
+    # This will raise a TypeError if the list contains non-numeric values
+    validate_input_number_list(data_set)
 
     mean = sample_mean(data_set)
 
@@ -36,8 +43,12 @@ def sample_standard_deviation(data_set: list) -> float:
 
 
 def median(input_list: list) -> float:
+
     if not input_list:
         return 0.0
+
+    # This will raise a TypeError if the list contains non-numeric values
+    validate_input_number_list(input_list)
 
     sorted_list = sorted(input_list)
     length = len(sorted_list)
@@ -58,8 +69,12 @@ def nquartile(input_list: list) -> tuple:
 
 
 def npercentile(input_list: list, percentile: int) -> float:
+
     if not input_list:
         return 0.0
+
+    # This will raise a TypeError if the list contains non-numeric values
+    validate_input_number_list(input_list)
 
     if not 1 <= percentile <= 99:
         raise ValueError("Invalid percentile. Percentiles must be in the range [1,99]")
@@ -85,3 +100,13 @@ def npercentile(input_list: list, percentile: int) -> float:
 
         result = sorted_list[index] + (mantissa * (sorted_list[index + 1] - sorted_list[index]))
         return result
+
+
+def validate_input_number_list(input_list: list):
+
+    if type(input_list) is not list:
+        raise TypeError("The input is not a list")
+
+    for x in input_list:
+        if not (type(x) is int or type(x) is float):
+            raise TypeError("Input list contains non-numeric values!")

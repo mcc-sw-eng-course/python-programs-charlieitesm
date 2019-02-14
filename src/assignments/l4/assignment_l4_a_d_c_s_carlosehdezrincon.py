@@ -79,6 +79,50 @@ class Exercise9RomanTest(unittest.TestCase):
         self.assertIsInstance(result, str)
 
 
+# Exercise14
+class MyPowerListTest(unittest.TestCase):
+    TEST_JSON_FILENAME = "test01.json"
+
+    def setUp(self):
+        self.under_test_list = [3, 4, 5, 12, 3, 5]
+
+        # Create the file for testing
+        with open(MyPowerListTest.TEST_JSON_FILENAME, "w") as file:
+            json.dump(self.under_test_list, file)
+
+    def tearDown(self):
+        #  Delete the test JSON files
+        if os.path.exists(UserDatabaseTest.TEST_JSON_FILENAME):
+            os.remove(UserDatabaseTest.TEST_JSON_FILENAME)
+
+    def test_successful_reading_of_file(self):
+        under_test = exercise14_MyPowerList()
+        self.assertIsNotNone(under_test)
+
+        result = under_test.read_from_text_file(MyPowerListTest.TEST_JSON_FILENAME)
+        self.assertTrue(result)
+        self.assertEqual(self.under_test_list, under_test._backend)
+
+        expected_str = "[" + ", ".join([str(x) for x in self.under_test_list]) + "]"
+
+        # Test str representation of MyPowerList
+        self.assertEqual(str(under_test), expected_str)
+
+    def test_successful_reading_of_file_no_extension(self):
+        under_test = exercise14_MyPowerList()
+        self.assertIsNotNone(under_test)
+
+        # Remove the extension, the code should be able to handle it
+        result = under_test.read_from_text_file(MyPowerListTest.TEST_JSON_FILENAME[:-5])
+        self.assertTrue(result)
+        self.assertEqual(self.under_test_list, under_test._backend)
+
+        expected_str = "[" + ", ".join([str(x) for x in self.under_test_list]) + "]"
+
+        # Test str representation of MyPowerList
+        self.assertEqual(str(under_test), expected_str)
+
+
 # Exercise15
 class UserTest(unittest.TestCase):
 

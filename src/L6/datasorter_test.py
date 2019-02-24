@@ -20,8 +20,10 @@ class DataSorterTest(unittest.TestCase):
             [-1, -3, 5, 23, 2, 34, 5, 7],
             [0, 3, 2.3, 12, 5, 2.4, 2.39],
             [9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, 2],
-            # Random case with 50 numbers
-            [random.randint(1, 100) for _ in range(50)]
+            # Random case with 50 int numbers
+            [random.randint(1, 100) for _ in range(50)],
+            # Random case with 30 float numbers
+            [random.uniform(1, 100) for _ in range(30)]
         ]
 
         for case in test_cases:

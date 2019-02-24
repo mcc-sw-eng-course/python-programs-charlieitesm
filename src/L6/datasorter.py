@@ -1,4 +1,4 @@
-from datetime import  datetime
+from datetime import datetime
 
 # Magic strings for the performance data map
 NUM_OF_RECORDS = "num_of_records"

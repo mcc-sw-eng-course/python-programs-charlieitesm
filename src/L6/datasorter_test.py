@@ -30,10 +30,6 @@ class DataSorterTest(unittest.TestCase):
             self.under_test.execute_merge_sort()
             result = self.under_test.data
 
-            # The result list should be a new object list
-            self.assertTrue(case is not result,
-                            msg="The resulting sorted list is not a different object from the original unsorted list!")
-
             # All elements in the original list should be in the sorted list
             self.assertTrue(len(case) == len(result),
                             msg=f"The original list and the sorting list are not of the same size! "

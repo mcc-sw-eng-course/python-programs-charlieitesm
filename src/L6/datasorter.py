@@ -16,6 +16,21 @@ class DataSorter:
         self.end_time = datetime.now()
         self.algorithm_used = ""
 
+    @staticmethod
+    def validate_input_list(input_list: list):
+        """
+        Validates if input_list is not None and is a list of only int or floats, if the validation doesn't pass
+        a ValueError will be raised
+        :param input_list: a list of values to validate
+        :raises: a ValueError if the validation fails
+        """
+        if list is None or type(input_list) is not list:
+            raise ValueError("The input_list was either None or not a list at all!")
+
+        # Check that all elements are either float or int
+        if not all([type(x) is int or type(x) is float for x in input_list]):
+            raise ValueError("The input_list contains values that are not int nor float!")
+
     # Exercise 25
     def set_input_data(self, file_path_name: str):
         pass

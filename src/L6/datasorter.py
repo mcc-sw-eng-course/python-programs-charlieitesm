@@ -16,6 +16,21 @@ class DataSorter:
         self.end_time = datetime.now()
         self.algorithm_used = ""
 
+    @staticmethod
+    def validate_input_list(input_list: list):
+        """
+        Validates if input_list is not None and is a list of only int or floats, if the validation doesn't pass
+        a ValueError will be raised
+        :param input_list: a list of values to validate
+        :raises: a ValueError if the validation fails
+        """
+        if list is None or type(input_list) is not list:
+            raise ValueError("The input_list was either None or not a list at all!")
+
+        # Check that all elements are either float or int
+        if not all([type(x) is int or type(x) is float for x in input_list]):
+            raise ValueError("The input_list contains values that are not int nor float!")
+
     # Exercise 25
     def set_input_data(self, file_path_name: str):
         pass
@@ -29,7 +44,60 @@ class DataSorter:
         # Remember to track the name of the algorithm in self.algorithm_used
         #  and to store the value of datetime.now() in self.start_time and
         #  self.end_time at appropriate times
+
+        # First validate that the data is valid, if no ValueError is raised, we'll continue
+        DataSorter.validate_input_list(self.data)
+
         self.algorithm_used = "Merge Sort"
+        self.start_time = datetime.now()
+
+        # If the list is empty or contains one element, just return and track the endtime
+        if not self.data or len(self.data) == 1:
+            self.end_time = datetime.now()
+            return
+
+        self.data = DataSorter._merge_sort(self.data)
+        self.end_time = datetime.now()
+
+    @staticmethod
+    def _merge_sort(input_list: list) -> list:
+
+        # This will allow us to recursively splice the input_list until there is only one element
+        if len(input_list) > 1:
+
+            middle = len(input_list) // 2
+            left = input_list[:middle]
+            right = input_list[middle:]
+
+            # Divide the lists until they have one element
+            left = DataSorter._merge_sort(left)
+            right = DataSorter._merge_sort(right)
+
+            # Merge the two lists, we'll need symmetric indexes for each list and a merged list
+            merged_list = []
+            i = j = 0
+
+            while i < len(left) and j < len(right):
+                if left[i] < right[j]:
+                    merged_list.append(left[i])
+                    i += 1
+                else:
+                    merged_list.append(right[j])
+                    j += 1
+
+            # If the lists were not symmetrical, we need append the remnant elements to the merged_list
+
+            if i < len(left):
+                merged_list.extend(left[i:])
+
+            if j < len(right):
+                merged_list.extend(right[j:])
+
+            return merged_list
+
+        else:
+            # If the list contains one element, it is considered sorted
+            return input_list
 
     # Exercise 30
     def get_performance_date(self) -> dict:

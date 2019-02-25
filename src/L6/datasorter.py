@@ -1,4 +1,6 @@
 from datetime import datetime
+from pathlib import Path
+import csv
 
 # Magic strings for the performance data map
 NUM_OF_RECORDS = "num_of_records"
@@ -18,7 +20,23 @@ class DataSorter:
 
     # Exercise 25
     def set_input_data(self, file_path_name: str):
-        pass
+        if type(file_path_name) is not str:
+            raise TypeError
+        file = Path(file_path_name)
+        if not file.is_file():
+            raise FileNotFoundError
+        elif not file_path_name.lower().endswith(".csv"):
+            raise NotCSVException
+        else:
+            with open(file_path_name, newline= '') as csvfile:
+                dialect = csv.Sniffer().sniff(csvfile.read(1024), [',','|'])
+                csvfile.seek(0)
+                items = csv.reader(csvfile,dialect)
+                for row in items:
+                    for i in row:
+                        self.data.append(i)
+
+            return True
 
     # Exercise 26
     def set_output_data(self, file_path_name: str):
@@ -40,3 +58,7 @@ class DataSorter:
             END_TIME: self.end_time,
             MERGE_ALGORITHM: self.algorithm_used
         }
+
+
+class NotCSVException(Exception):
+    pass

@@ -4,8 +4,8 @@ import unittest
 from datetime import datetime
 
 from L6.datasorter import DataSorter
-from L6.datasorter import NotCSVException
 from L6.datasorter import NUM_OF_RECORDS, ALGORITHM, MERGE_SORT, START_TIME, END_TIME, TIME_CONSUMED
+from L6.datasorter import NotCSVException
 
 # Magic Strings for filenames
 TEST_FILE_1 = "test1.txt"
@@ -122,7 +122,7 @@ class DataSorterTest(unittest.TestCase):
         self.assertEqual(expected_algorithm, result[ALGORITHM])
         self.assertEqual(len(test_case), result[NUM_OF_RECORDS])
 
-        # Let's give it a 16k-microsecond margin
-        self.assertAlmostEqual(expected_start_time.microsecond, result[START_TIME].microsecond, delta=16000)
-        self.assertAlmostEqual(expected_end_time.microsecond, result[END_TIME].microsecond, delta=16000)
-        self.assertAlmostEqual(expected_time_executed.microseconds, result[TIME_CONSUMED].microseconds, delta=16000)
+        # Let's give it a 50k-microsecond margin
+        self.assertAlmostEqual(expected_start_time.microsecond, result[START_TIME].microsecond, delta=50000)
+        self.assertAlmostEqual(expected_end_time.microsecond, result[END_TIME].microsecond, delta=50000)
+        self.assertAlmostEqual(expected_time_executed.microseconds, result[TIME_CONSUMED].microseconds, delta=50000)

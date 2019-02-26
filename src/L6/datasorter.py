@@ -44,12 +44,19 @@ class DataSorter:
         else:
             self.data = []
             with open(file_path_name, newline= '') as csvfile:
-                dialect = csv.Sniffer().sniff(csvfile.read(1024), [',','|'])
+                try:
+                    dialect = csv.Sniffer().sniff(csvfile.read(1024), [',','|'])
+                except csv.Error:
+                    raise NotCSVException
                 csvfile.seek(0)
-                items = csv.reader(csvfile,dialect)
+                items = csv.reader(csvfile, dialect)
                 for row in items:
                     for i in row:
-                        self.data.append(i)
+                        try:
+                            value = float(i)
+                            self.data.append(value)
+                        except ValueError:
+                            raise ValueError
 
             return True
 

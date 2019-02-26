@@ -43,9 +43,9 @@ class DataSorter:
             raise NotCSVException
         else:
             self.data = []
-            with open(file_path_name, newline= '') as csvfile:
+            with open(file_path_name, newline='') as csvfile:
                 try:
-                    dialect = csv.Sniffer().sniff(csvfile.read(1024), [',','|'])
+                    dialect = csv.Sniffer().sniff(csvfile.read(1024), [',', '|'])
                 except csv.Error:
                     raise NotCSVException
                 csvfile.seek(0)

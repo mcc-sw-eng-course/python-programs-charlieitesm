@@ -1,6 +1,6 @@
-from datetime import datetime
-import os
 import csv
+import os
+from datetime import datetime
 
 # Magic strings for the performance data map
 NUM_OF_RECORDS = "num_of_records"
@@ -35,29 +35,32 @@ class DataSorter:
 
     # Exercise 25
     def set_input_data(self, file_path_name: str):
+
         if type(file_path_name) is not str:
             raise TypeError
-        if not os.path.exists(file_path_name) and os.path.isfile(file_path_name):
-            raise FileNotFoundError
-        elif not file_path_name.lower().endswith(".csv"):
-            raise NotCSVException
-        else:
-            self.data = []
-            with open(file_path_name, newline='') as csvfile:
-                try:
-                    dialect = csv.Sniffer().sniff(csvfile.read(1024), [',', '|'])
-                except csv.Error:
-                    raise NotCSVException
-                csvfile.seek(0)
-                items = csv.reader(csvfile, dialect)
-                for row in items:
-                    for i in row:
-                        if i.isdigit():
-                            self.data.append(float(i))
-                        else:
-                            raise ValueError("The CSV contains non-numeric values")
 
-            return True
+        if not (os.path.exists(file_path_name) and os.path.isfile(file_path_name)):
+            raise FileNotFoundError
+
+        if not file_path_name.lower().endswith(".csv"):
+            raise NotCSVException
+
+        self.data = []
+        with open(file_path_name, newline='') as csvfile:
+            try:
+                dialect = csv.Sniffer().sniff(csvfile.read(1024), [',', '|'])
+            except csv.Error:
+                raise NotCSVException
+            csvfile.seek(0)
+            items = csv.reader(csvfile, dialect)
+            for row in items:
+                for i in row:
+                    if i.isdigit():
+                        self.data.append(float(i))
+                    else:
+                        raise ValueError("The CSV contains non-numeric values")
+
+        return True
 
     # Exercise 26
     def set_output_data(self, file_path_name: str):

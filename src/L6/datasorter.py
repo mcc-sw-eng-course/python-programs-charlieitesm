@@ -1,5 +1,5 @@
 from datetime import datetime
-from pathlib import Path
+import os
 import csv
 
 # Magic strings for the performance data map
@@ -22,12 +22,12 @@ class DataSorter:
     def set_input_data(self, file_path_name: str):
         if type(file_path_name) is not str:
             raise TypeError
-        file = Path(file_path_name)
-        if not file.is_file():
+        if not os.path.exists(file_path_name) and os.path.isfile(file_path_name):
             raise FileNotFoundError
         elif not file_path_name.lower().endswith(".csv"):
             raise NotCSVException
         else:
+            self.data = []
             with open(file_path_name, newline= '') as csvfile:
                 dialect = csv.Sniffer().sniff(csvfile.read(1024), [',','|'])
                 csvfile.seek(0)

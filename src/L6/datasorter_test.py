@@ -1,23 +1,29 @@
+import os
 import random
 import unittest
-import os
 
-from datasorter import DataSorter
-from datasorter import NotCSVException
+from L6.datasorter import DataSorter
+from L6.datasorter import NotCSVException
+
+# Magic Strings for filenames
+TEST_FILE_1 = "test1.txt"
+TEST_FILE_2 = "test2.csv"
+TEST_FILE_3 = "test3.csv"
 
 
 class DataSorterTest(unittest.TestCase):
 
     def setUp(self):
         self.under_test = DataSorter()
-        file = open("test1.txt", "w+")
-        file.write("1")
-        file.close()
-        file = open("test2.csv", "w+")
-        file.write("1, 2, 3")
-        file = open("test3.csv", "w+")
-        file.write("q, p, t")
-        file.close()
+
+        with open(TEST_FILE_1, "w+") as file:
+            file.write("1")
+
+        with open(TEST_FILE_2, "w+") as file:
+            file.write("1, 2, 3")
+
+        with open(TEST_FILE_3, "w+") as file:
+            file.write("q, p, t")
 
     def test_set_input_data_with_invalid_paths(self):
         with self.assertRaises(TypeError):
@@ -40,12 +46,10 @@ class DataSorterTest(unittest.TestCase):
         self.assertEqual(3, self.under_test.data[2])
 
     def tearDown(self):
-        if os.path.exists("test1.txt"):
-            os.remove("test1.txt")
-        if os.path.exists("test2.csv"):
-            os.remove("test2.csv")
-        if os.path.exists("test3.csv"):
-            os.remove("test3.csv")
+
+        for filename in TEST_FILE_1, TEST_FILE_2, TEST_FILE_3:
+            if os.path.exists(filename):
+                os.remove(filename)
 
     def test_merge_sort(self):
         # We'll test valid test cases here

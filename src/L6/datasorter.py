@@ -52,11 +52,10 @@ class DataSorter:
                 items = csv.reader(csvfile, dialect)
                 for row in items:
                     for i in row:
-                        try:
-                            value = float(i)
-                            self.data.append(value)
-                        except ValueError:
-                            raise ValueError
+                        if i.isdigit():
+                            self.data.append(float(i))
+                        else:
+                            raise ValueError("The CSV contains non-numeric values")
 
             return True
 

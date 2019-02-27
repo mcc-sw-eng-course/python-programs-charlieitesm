@@ -7,7 +7,10 @@ NUM_OF_RECORDS = "num_of_records"
 TIME_CONSUMED = "time_consumed"
 START_TIME = "start_time"
 END_TIME = "end_time"
-MERGE_ALGORITHM = "merge_algorithm"
+ALGORITHM = "algorithm"
+
+# Algorithm Identifiers
+MERGE_SORT = "Merge Sort"
 
 
 class DataSorter:
@@ -75,7 +78,7 @@ class DataSorter:
         # First validate that the data is valid, if no ValueError is raised, we'll continue
         DataSorter.validate_input_list(self.data)
 
-        self.algorithm_used = "Merge Sort"
+        self.algorithm_used = MERGE_SORT
         self.start_time = datetime.now()
 
         # If the list is empty or contains one element, just return and track the endtime
@@ -133,7 +136,7 @@ class DataSorter:
             TIME_CONSUMED: self.end_time - self.start_time,
             START_TIME: self.start_time,
             END_TIME: self.end_time,
-            MERGE_ALGORITHM: self.algorithm_used
+            ALGORITHM: self.algorithm_used
         }
 
 

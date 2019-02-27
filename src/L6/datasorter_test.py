@@ -4,11 +4,15 @@ import unittest
 
 from L6.datasorter import DataSorter
 from L6.datasorter import NotCSVException
+from L6.datasorter import EmptyDataArrayException
 
 # Magic Strings for filenames
 TEST_FILE_1 = "test1.txt"
 TEST_FILE_2 = "test2.csv"
 TEST_FILE_3 = "test3.csv"
+TEST_FILE_4 = "test4.csv"
+TEST_FILE_5 = "test5"
+TEST_FILE_5_2 = "test5.csv"
 
 
 class DataSorterTest(unittest.TestCase):
@@ -45,9 +49,22 @@ class DataSorterTest(unittest.TestCase):
         self.assertEqual(3, len(self.under_test.data))
         self.assertEqual(3, self.under_test.data[2])
 
+    def test_set_output_data_with_invalid_data(self):
+        with self.assertRaises(EmptyDataArrayException):
+            self.under_test.data = []
+            self.under_test.set_output_data(TEST_FILE_4)
+
+    def test_set_output_data_with_valid_data(self):
+        self.under_test.set_input_data(TEST_FILE_2)
+        data = self.under_test.data
+        self.assertTrue(self.under_test.set_output_data(TEST_FILE_4))
+        self.assertTrue(self.under_test.set_output_data(TEST_FILE_5))
+        self.assertTrue(self.under_test.set_input_data(TEST_FILE_4))
+        self.assertEqual(data, self.under_test.data)
+
     def tearDown(self):
 
-        for filename in TEST_FILE_1, TEST_FILE_2, TEST_FILE_3:
+        for filename in TEST_FILE_1, TEST_FILE_2, TEST_FILE_3, TEST_FILE_4, TEST_FILE_5_2:
             if os.path.exists(filename):
                 os.remove(filename)
 

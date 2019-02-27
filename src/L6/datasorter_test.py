@@ -59,7 +59,13 @@ class DataSorterTest(unittest.TestCase):
         data = self.under_test.data
         self.assertTrue(self.under_test.set_output_data(TEST_FILE_4))
         self.assertTrue(self.under_test.set_output_data(TEST_FILE_5))
+
+        self.assertTrue(os.path.exists(TEST_FILE_4))
+        self.assertTrue(os.path.exists(TEST_FILE_5_2))
+
         self.assertTrue(self.under_test.set_input_data(TEST_FILE_4))
+        self.assertEqual(data, self.under_test.data)
+        self.assertTrue(self.under_test.set_input_data(TEST_FILE_5_2))
         self.assertEqual(data, self.under_test.data)
 
     def tearDown(self):

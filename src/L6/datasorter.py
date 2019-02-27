@@ -71,13 +71,12 @@ class DataSorter:
             file_path_name = file_path_name + ".csv"
         if len(self.data) == 0:
             raise EmptyDataArrayException
-        with open(file_path_name, 'w+') as file:
-            output = ""
-            for item in self.data:
-                output = output + str(item) + ", "
-            output = output[:-2]
-            print(output)
-            file.write(output)
+        output = []
+        for item in self.data:
+            output.append(str(item))
+        with open(file_path_name, 'w', newline='') as file:
+            writer = csv.writer(file, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            writer.writerow(output)
         return True
 
     # Exercise 27

@@ -145,3 +145,7 @@ class DataSorterTest(unittest.TestCase):
         self.assertIsNotNone(result[START_TIME])
         self.assertIsNotNone(result[END_TIME])
         self.assertIsNotNone(result[TIME_CONSUMED])
+
+
+if __name__ == "__main__":
+    unittest.main()

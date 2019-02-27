@@ -1,5 +1,6 @@
 import csv
 import os
+import re
 from datetime import datetime
 
 # Magic strings for the performance data map
@@ -60,6 +61,8 @@ class DataSorter:
                 for i in row:
                     if i.isdigit():
                         self.data.append(float(i))
+                    elif re.match("^\d+?\.\d+?$", i):
+                        self.data.append(float(i))
                     else:
                         raise ValueError("The CSV contains non-numeric values")
 
@@ -67,7 +70,17 @@ class DataSorter:
 
     # Exercise 26
     def set_output_data(self, file_path_name: str):
-        pass
+        if not file_path_name.lower().endswith(".csv"):
+            file_path_name = file_path_name + ".csv"
+        if len(self.data) == 0:
+            raise EmptyDataArrayException
+        output = []
+        for item in self.data:
+            output.append(str(item))
+        with open(file_path_name, 'w', newline='') as file:
+            writer = csv.writer(file, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            writer.writerow(output)
+        return True
 
     # Exercise 27
     def execute_merge_sort(self):
@@ -141,4 +154,8 @@ class DataSorter:
 
 
 class NotCSVException(Exception):
+    pass
+
+
+class EmptyDataArrayException(Exception):
     pass

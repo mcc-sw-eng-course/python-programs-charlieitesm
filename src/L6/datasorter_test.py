@@ -1,12 +1,11 @@
 import os
 import random
 import unittest
-from datetime import datetime
 
 from L6.datasorter import DataSorter
+from L6.datasorter import EmptyDataArrayException
 from L6.datasorter import NUM_OF_RECORDS, ALGORITHM, MERGE_SORT, START_TIME, END_TIME, TIME_CONSUMED
 from L6.datasorter import NotCSVException
-from L6.datasorter import EmptyDataArrayException
 
 # Magic Strings for filenames
 TEST_FILE_1 = "test1.txt"
@@ -129,11 +128,8 @@ class DataSorterTest(unittest.TestCase):
         self.under_test.data = test_case
 
         # Merge Sort
-        expected_start_time = datetime.now()
         self.under_test.execute_merge_sort()
-        expected_end_time = datetime.now()
 
-        expected_time_executed = expected_end_time - expected_start_time
         expected_algorithm = MERGE_SORT
 
         result = self.under_test.get_performance_date()
@@ -145,7 +141,7 @@ class DataSorterTest(unittest.TestCase):
         self.assertEqual(expected_algorithm, result[ALGORITHM])
         self.assertEqual(len(test_case), result[NUM_OF_RECORDS])
 
-        # Let's give it a 50k-microsecond margin
-        self.assertAlmostEqual(expected_start_time.microsecond, result[START_TIME].microsecond, delta=50000)
-        self.assertAlmostEqual(expected_end_time.microsecond, result[END_TIME].microsecond, delta=50000)
-        self.assertAlmostEqual(expected_time_executed.microseconds, result[TIME_CONSUMED].microseconds, delta=50000)
+        # Check that we the time-related metrics are populated
+        self.assertIsNotNone(result[START_TIME])
+        self.assertIsNotNone(result[END_TIME])
+        self.assertIsNotNone(result[TIME_CONSUMED])

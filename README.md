@@ -5,6 +5,9 @@ Pair: José René Signoret Becerra
 Student ID: A****4797
 
 ## Prerequisites
+###You need **Python3.6** or better to run this modules
+Python 3.5 or less will not work.
+
 Make sure that you have installed the Coverage.py module with _pip_ or _anaconda_.
 
 ```bash

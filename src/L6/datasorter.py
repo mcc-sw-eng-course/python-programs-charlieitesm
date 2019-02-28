@@ -31,11 +31,11 @@ class DataSorter:
         :raises: a ValueError if the validation fails
         """
         if list is None or type(input_list) is not list:
-            raise ValueError("The input_list was either None or not a list at all!")
+            raise InvalidInputList("The input_list was either None or not a list at all!")
 
         # Check that all elements are either float or int
         if not all([type(x) is int or type(x) is float for x in input_list]):
-            raise ValueError("The input_list contains values that are not int nor float!")
+            raise InvalidInputList("The input_list contains values that are not int nor float!")
 
     # Exercise 25
     def set_input_data(self, file_path_name: str):
@@ -59,10 +59,13 @@ class DataSorter:
             items = csv.reader(csvfile, dialect)
             for row in items:
                 for i in row:
+
                     if i.isdigit():
                         self.data.append(float(i))
-                    elif re.match("^\d+?\.\d+?$", i):
+
+                    elif re.match("^\\d+?\\.\\d+?$", i):
                         self.data.append(float(i))
+
                     else:
                         raise ValueError("The CSV contains non-numeric values")
 
@@ -158,4 +161,8 @@ class NotCSVException(Exception):
 
 
 class EmptyDataArrayException(Exception):
+    pass
+
+
+class InvalidInputList(Exception):
     pass

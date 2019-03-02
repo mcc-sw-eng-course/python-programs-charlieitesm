@@ -4,7 +4,7 @@ import unittest
 
 from L6.datasorter import DataSorter
 from L6.datasorter import EmptyDataArrayException
-from L6.datasorter import NUM_OF_RECORDS, ALGORITHM, MERGE_SORT, START_TIME, END_TIME, TIME_CONSUMED
+from L6.datasorter import NUM_OF_RECORDS, ALGORITHM, MERGE_SORT, HEAP_SORT, START_TIME, END_TIME, TIME_CONSUMED
 from L6.datasorter import NotCSVException, InvalidInputList
 
 # Magic Strings for filenames
@@ -171,7 +171,7 @@ class DataSorterTest(unittest.TestCase):
                                    msg=f"{case} was an invalid case but ValueError was not raised!"):
                 self.under_test.execute_heap_sort()
 
-    def test_get_performance_data(self):
+    def test_get_performance_data_merge_sort(self):
         test_case = [random.randint(1, 100) for _ in range(100000)]
         self.under_test.data = test_case
 
@@ -180,7 +180,30 @@ class DataSorterTest(unittest.TestCase):
 
         expected_algorithm = MERGE_SORT
 
-        result = self.under_test.get_performance_date()
+        result = self.under_test.get_performance_data()
+
+        # We should get a non-none dict that is not empty
+        self.assertIsNotNone(result)
+        self.assertTrue(len(result) != 0)
+
+        self.assertEqual(expected_algorithm, result[ALGORITHM])
+        self.assertEqual(len(test_case), result[NUM_OF_RECORDS])
+
+        # Check that we the time-related metrics are populated
+        self.assertIsNotNone(result[START_TIME])
+        self.assertIsNotNone(result[END_TIME])
+        self.assertIsNotNone(result[TIME_CONSUMED])
+
+    def test_get_performance_data_heap_sort(self):
+        test_case = [random.randint(1, 100) for _ in range(100000)]
+        self.under_test.data = test_case
+
+        # Heap Sort
+        self.under_test.execute_heap_sort()
+
+        expected_algorithm = HEAP_SORT
+
+        result = self.under_test.get_performance_data()
 
         # We should get a non-none dict that is not empty
         self.assertIsNotNone(result)

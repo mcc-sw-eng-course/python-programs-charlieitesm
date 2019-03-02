@@ -12,6 +12,7 @@ ALGORITHM = "algorithm"
 
 # Algorithm Identifiers
 MERGE_SORT = "Merge Sort"
+HEAP_SORT = "Heap Sort"
 
 
 class DataSorter:
@@ -150,7 +151,7 @@ class DataSorter:
             return input_list
 
     # Exercise 30
-    def get_performance_date(self) -> dict:
+    def get_performance_data(self) -> dict:
         return {
             NUM_OF_RECORDS: len(self.data),
             TIME_CONSUMED: self.end_time - self.start_time,

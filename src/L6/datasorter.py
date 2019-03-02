@@ -105,6 +105,10 @@ class DataSorter:
         self.data = DataSorter._merge_sort(self.data)
         self.end_time = datetime.now()
 
+    # Exercise 28
+    def execute_heap_sort(self):
+        pass
+
     @staticmethod
     def _merge_sort(input_list: list) -> list:
 

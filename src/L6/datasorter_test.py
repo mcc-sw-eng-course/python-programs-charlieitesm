@@ -5,7 +5,7 @@ import unittest
 from L6.datasorter import DataSorter
 from L6.datasorter import EmptyDataArrayException
 from L6.datasorter import NUM_OF_RECORDS, ALGORITHM, MERGE_SORT, HEAP_SORT, START_TIME, END_TIME, TIME_CONSUMED
-from L6.datasorter import NotCSVException, InvalidInputList
+from L6.datasorter import NotCSVException, InvalidInputListError
 
 # Magic Strings for filenames
 TEST_FILE_1 = "test1.txt"
@@ -119,7 +119,7 @@ class DataSorterTest(unittest.TestCase):
             # Inject a simulation of the data
             self.under_test.data = case
 
-            with self.assertRaises(InvalidInputList,
+            with self.assertRaises(InvalidInputListError,
                                    msg=f"{case} was an invalid case but ValueError was not raised!"):
                 self.under_test.execute_merge_sort()
 
@@ -167,7 +167,7 @@ class DataSorterTest(unittest.TestCase):
             # Inject a simulation of the data
             self.under_test.data = case
 
-            with self.assertRaises(InvalidInputList,
+            with self.assertRaises(InvalidInputListError,
                                    msg=f"{case} was an invalid case but ValueError was not raised!"):
                 self.under_test.execute_heap_sort()
 

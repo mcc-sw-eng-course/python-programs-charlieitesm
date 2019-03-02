@@ -32,11 +32,11 @@ class DataSorter:
         :raises: a ValueError if the validation fails
         """
         if list is None or type(input_list) is not list:
-            raise InvalidInputList("The input_list was either None or not a list at all!")
+            raise InvalidInputListError("The input_list was either None or not a list at all!")
 
         # Check that all elements are either float or int
         if not all([type(x) is int or type(x) is float for x in input_list]):
-            raise InvalidInputList("The input_list contains values that are not int nor float!")
+            raise InvalidInputListError("The input_list contains values that are not int nor float!")
 
     # Exercise 25
     def set_input_data(self, file_path_name: str):
@@ -92,7 +92,7 @@ class DataSorter:
         #  and to store the value of datetime.now() in self.start_time and
         #  self.end_time at appropriate times
 
-        # First validate that the data is valid, if no ValueError is raised, we'll continue
+        # First validate that the data is valid, if no InvalidInputListError is raised, we'll continue
         DataSorter.validate_input_list(self.data)
 
         self.algorithm_used = MERGE_SORT
@@ -169,5 +169,5 @@ class EmptyDataArrayException(Exception):
     pass
 
 
-class InvalidInputList(Exception):
+class InvalidInputListError(Exception):
     pass

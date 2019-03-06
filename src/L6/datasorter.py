@@ -13,7 +13,7 @@ ALGORITHM = "algorithm"
 # Algorithm Identifiers
 MERGE_SORT = "Merge Sort"
 HEAP_SORT = "Heap Sort"
-
+QUICK_SORT = "Quick sort"
 
 class DataSorter:
 
@@ -201,6 +201,92 @@ class DataSorter:
 
             # Propagate the heapify through the nodes to maintain the heap correct
             DataSorter._max_heapify(input_list, upper_limit, largest_idx)
+
+    # Excercise 29
+    def excute_quick_sort(self):
+        # We first validate the input data, if no ValueError is raised, we'll continue. This raises an
+        # InvalidInputListError on None lists too.
+        DataSorter.validate_input_list(self.data)
+
+        self.algorithm_used = QUICK_SORT
+        self.start_time = datetime.now()
+
+        # An empty list and a list with one element is considered sorted, just return and track the endtime
+        if not self.data or len(self.data) == 1:
+            self.end_time = datetime.now()
+            return
+        length = len(self.data)
+        self.data = self._iterative_quick_sort(self.data, 0, length-1)
+
+        self.end_time = datetime.now()
+
+    def _quick_sort(self, input_list: list, begin: int, end: int):
+        if begin < end:
+            partition_index = self._partition(input_list, begin, end)
+
+            self._quick_sort(input_list, partition_index +1, end)
+            self._quick_sort(input_list, begin, partition_index-1)
+        return input_list
+
+    def _iterative_quick_sort(self,  input_list: list, begin: int, end: int):
+        # Create an auxiliary stack
+        size = end - begin + 1
+        stack = [0] * (size)
+
+        # initialize top of stack
+        top = -1
+
+        # push initial values of l and h to stack
+        top = top + 1
+        stack[top] = begin
+        top = top + 1
+        stack[top] = end
+
+        # Keep popping from stack while is not empty
+        while top >= 0:
+
+            # Pop h and l
+            end = stack[top]
+            top = top - 1
+            begin = stack[top]
+            top = top - 1
+
+            # Set pivot element at its correct position in
+            # sorted array
+            p = self._partition(input_list, begin, end)
+
+            # If there are elements on left side of pivot,
+            # then push left side to stack
+            if p - 1 > begin:
+                top = top + 1
+                stack[top] = begin
+                top = top + 1
+                stack[top] = p - 1
+
+            # If there are elements on right side of pivot,
+            # then push right side to stack
+            if p + 1 < end:
+                top = top + 1
+                stack[top] = p + 1
+                top = top + 1
+                stack[top] = end
+        return input_list
+
+    @staticmethod
+    def _partition(input_list: list, begin: int, end: int):
+        pivot = input_list[end]
+        i = begin-1
+        for j in range(begin, end):
+            if input_list[j] <= pivot:
+                i= i+1
+                swap_temp = input_list[i]
+                input_list[i] = input_list[j]
+                input_list[j] = swap_temp
+
+        swap_temp = input_list[i+1]
+        input_list[i+1] = input_list[end]
+        input_list[end] = swap_temp
+        return i+1
 
     # Exercise 30
     def get_performance_data(self) -> dict:

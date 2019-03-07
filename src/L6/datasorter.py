@@ -15,6 +15,7 @@ MERGE_SORT = "Merge Sort"
 HEAP_SORT = "Heap Sort"
 QUICK_SORT = "Quick sort"
 
+
 class DataSorter:
 
     def __init__(self):

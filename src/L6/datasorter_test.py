@@ -2,10 +2,11 @@ import os
 import random
 import unittest
 
-from datasorter import DataSorter
-from datasorter import EmptyDataArrayException
-from datasorter import NUM_OF_RECORDS, ALGORITHM, MERGE_SORT, HEAP_SORT, QUICK_SORT, START_TIME, END_TIME, TIME_CONSUMED
-from datasorter import NotCSVException, InvalidInputListError
+from L6.datasorter import DataSorter
+from L6.datasorter import EmptyDataArrayException
+from L6.datasorter import NUM_OF_RECORDS, ALGORITHM, MERGE_SORT, HEAP_SORT, QUICK_SORT, START_TIME, END_TIME, \
+    TIME_CONSUMED
+from L6.datasorter import NotCSVException, InvalidInputListError
 
 # Magic Strings for filenames
 TEST_FILE_1 = "test1.txt"
@@ -266,7 +267,7 @@ class DataSorterTest(unittest.TestCase):
                             msg=f"{case} was not sorted ASC using QuickSort, it showed as: {result}")
 
     def test_get_performance_data_quick_sort(self):
-        test_case = [random.randint(1, 100) for _ in range(100000)]
+        test_case = [random.randint(1, 100) for _ in range(500)]
         self.under_test.data = test_case
 
         # Heap Sort

@@ -220,14 +220,6 @@ class DataSorter:
 
         self.end_time = datetime.now()
 
-    def _quick_sort(self, input_list: list, begin: int, end: int):
-        if begin < end:
-            partition_index = self._partition(input_list, begin, end)
-
-            self._quick_sort(input_list, partition_index +1, end)
-            self._quick_sort(input_list, begin, partition_index-1)
-        return input_list
-
     def _iterative_quick_sort(self,  input_list: list, begin: int, end: int):
         # Create an auxiliary stack
         size = end - begin + 1

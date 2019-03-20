@@ -33,7 +33,7 @@ $ coverage3 run -m L6.datasorter_test
 
 ### Running coverage for L4
 ```bash
-$ coverage3 run -m assignments.l4.assignment_l4_a_d_c_s_carlosehdezrincon
+$ coverage3 run -m L4.assignment_l4_a_d_c_s_carlosehdezrincon
 ```
 
 **Note how, when invoking the script as a Python module you don't specify the .py extension. The name of the file is enough.**

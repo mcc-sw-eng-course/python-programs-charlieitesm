@@ -14,15 +14,15 @@ import os
 import statistics
 import unittest
 
-from assignments.l4.exercise_14 import MyPowerList as exercise14_MyPowerList
-from assignments.l4.exercise_15 import User as exercise15_User
-from assignments.l4.exercise_15 import UsersDatabase as exercise15_UsersDataBase
-from assignments.l4.exercise_8 import median as exercise8_median
-from assignments.l4.exercise_8 import npercentile as exercise8_npercentile
-from assignments.l4.exercise_8 import nquartile as exercise8_nquartile
-from assignments.l4.exercise_8 import sample_mean as exercise8_sample_mean
-from assignments.l4.exercise_8 import sample_standard_deviation as exercise8_sample_std_dev
-from assignments.l4.exercise_9 import decimal_2_roman as exercise9_roman
+from L4.exercise_14 import MyPowerList as exercise14_MyPowerList
+from L4.exercise_15 import User as exercise15_User
+from L4.exercise_15 import UsersDatabase as exercise15_UsersDataBase
+from L4.exercise_8 import median as exercise8_median
+from L4.exercise_8 import npercentile as exercise8_npercentile
+from L4.exercise_8 import nquartile as exercise8_nquartile
+from L4.exercise_8 import sample_mean as exercise8_sample_mean
+from L4.exercise_8 import sample_standard_deviation as exercise8_sample_std_dev
+from L4.exercise_9 import decimal_2_roman as exercise9_roman
 
 
 # Exercise8

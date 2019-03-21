@@ -1,0 +1,5 @@
+[run]
+omit =
+    src/L8/board/board.py
+    *__init__.py
+    */tictectoe_engine.py

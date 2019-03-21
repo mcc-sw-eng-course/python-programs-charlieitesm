@@ -6,7 +6,7 @@ Student ID: A****4797
 
 ## Prerequisites
 
-## You need **Python3.6** or better to run this modules
+## You need **Python3.6** or better to run these modules
 
 Python 3.5 or less will not work.
 
@@ -22,6 +22,9 @@ Coverage.py can receive module names (which can include Python packages) in the 
 
 Since this repository is using Python packages to organize the assignments, we need to specify them when running the
 test module, we can specify this with the _-m_ parameter and the name of the file containing the unit tests.
+
+### Running L8
+The src/L8 contains instructions on how to run the TicTecToeEngine
 
 ### Running coverage for L6
 ```bash

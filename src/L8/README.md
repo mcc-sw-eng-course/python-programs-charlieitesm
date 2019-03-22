@@ -42,3 +42,22 @@ With these pieces we can then create a TicTacToeLocalGame which inherits TicTacT
 Player is an interface implemented by AIPlayer and HumanPlayer. AIPlayer has a Brain, which again, is an interface implemented by TicTacToeBrain. This allows us to reuse the AIPlayer for different games by just changing its brain.
 
 Finally, we have UI, which is implemented by ConsoleUI but could also be used by a GUI or a NetworkUI that could notify players over the network of the state of the game and read their inputs.
+
+### Running coverage for L8
+First position yourself in the src/ folder and execute the following command
+```bash
+$ coverage3 run -m unittest discover L8/
+```
+
+This will make use of the discover operation of the unittest module to automatically detect all of the unit tests.
+
+## Generating a report
+After running the coverage report, we can then generate a report to the console:
+```bash
+$ coverage3 report
+```
+Or we can get a nicely formatted HTML instead:
+```bash
+$ coverage3 html
+```
+This will generate an _htmlcov/index.html_ file that, when opened in a browser will have a colored report on coverage.

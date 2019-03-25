@@ -55,12 +55,23 @@ def parse_args():
                         help="The port on which you want the server to listen for connections "
                              "or the clients to connect to.")
 
+    parser.add_argument('--ip',
+                        metavar='IP',
+                        dest="ip_address",
+                        type=str,
+                        help="The IP address the client will connect to. "
+                             "This argument is ignored if game-mode is not client")
+
     args = parser.parse_args()
 
     if args.game_mode == "local":
         args.game_mode = GameMode.LOCAL
     elif args.game_mode == "client":
         args.game_mode = GameMode.CLIENT
+
+        if not args.ip_address:
+            parser.error("A client mode was specified but a server ip address was not provided!")
+
     elif args.game_mode == "server":
         args.game_mode = GameMode.SERVER
 

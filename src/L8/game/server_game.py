@@ -1,8 +1,11 @@
 import logging
 import socket
+import time
 from abc import ABC
 
 from L8.game.game import Game
+from L8.player.remote_player import RemotePlayer
+from L8.ui.ui import RemoteUI
 
 # Create a logger for later troubleshooting
 logging.basicConfig(level=logging.DEBUG,
@@ -53,8 +56,22 @@ class ServerGame(Game, ABC):
                     raise e
 
     def wait_for_players_to_connect(self):
-        pass
+        # Wait for connections from RemotePlayers only, AI players are ready to play!
+        players_pending_to_connect = [p for p in self.players if type(p) is RemotePlayer]
 
+        while players_pending_to_connect:
+            connection, client_address = self.server_socket.accept()
+            self.managed_resources.append(connection)
+
+            ServerGame.LOGGER.info(f"Received a connection from {str(client_address)}")
+
+            remote_player = players_pending_to_connect.pop(0)
+            remote_player.ui = RemoteUI(connection)
+
+            # Wait for connections every second in order to avoid making an airplane out of our computer
+            time.sleep(1)
+
+    # noinspection PyBroadException
     def release_resources(self):
         ServerGame.LOGGER.info(f"Releasing server resources for port... {self.port}")
 

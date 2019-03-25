@@ -6,6 +6,7 @@ from L8.game.tic_tac_toe_game import TicTacToeLocalGame, TicTacToeGame, TicTacTo
 from L8.player.ai.tic_tac_toe_brain import TicTacToeBrain
 from L8.player.ai_player import AIPlayer
 from L8.player.human_player import HumanPlayer
+from L8.player.remote_player import RemotePlayer
 from L8.ui.ui import ConsoleUI
 
 
@@ -24,10 +25,17 @@ class GameFactory:
             tokens = TicTacToeGame.LEGAL_TOKENS.copy()
             ai_brain = TicTacToeBrain(args.level)
 
-        # Build the player instances
-        for i in range(args.human_players):
-            token_to_assign = tokens.pop(0)
-            players.append(HumanPlayer(ui, token_to_assign))
+        if args.game_mode == GameMode.LOCAL:
+            # Build the player instances
+            for i in range(args.human_players):
+                token_to_assign = tokens.pop(0)
+                players.append(HumanPlayer(ui, token_to_assign))
+
+        elif args.game_mode == GameMode.SERVER:
+            # Build the player instances
+            for i in range(args.human_players):
+                token_to_assign = tokens.pop(0)
+                players.append(RemotePlayer(token_to_assign))
 
         # Build the AI Players, if needed and as many as needed to complete 2 players
         for i in range(len(players), 2):

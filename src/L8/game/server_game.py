@@ -58,6 +58,7 @@ class ServerGame(Game, ABC):
     def wait_for_players_to_connect(self):
         # Wait for connections from RemotePlayers only, AI players are ready to play!
         players_pending_to_connect = [p for p in self.players if type(p) is RemotePlayer]
+        ServerGame.LOGGER.info("Waiting for players to connect...")
 
         while players_pending_to_connect:
             connection, client_address = self.server_socket.accept()
@@ -70,6 +71,8 @@ class ServerGame(Game, ABC):
 
             # Wait for connections every second in order to avoid making an airplane out of our computer
             time.sleep(1)
+
+        ServerGame.LOGGER.info("All players are connected, beginning the game GOOD LUCK!...")
 
     # noinspection PyBroadException
     def release_resources(self):

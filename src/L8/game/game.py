@@ -14,6 +14,10 @@ class Game(ABC):
         self.players = players
         self.winner = None
 
+        # These fields will be used by network games only
+        self.ip_address = None
+        self.port = None
+
     @abstractmethod
     def initialize_resources(self):  # pragma: no cover
         raise NotImplementedError

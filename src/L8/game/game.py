@@ -28,39 +28,41 @@ class Game(ABC):
         raise NotImplementedError
 
     def play(self):  # pragma: no cover
-        # Let the concrete game to decide if it needs to initialize resources (like network connections)
-        self.initialize_resources()
+        try:
+            # Let the concrete game to decide if it needs to initialize resources (like network connections)
+            self.initialize_resources()
 
-        # This will contain the main game loop
-        is_game_over_yet = False
+            # This will contain the main game loop
+            is_game_over_yet = False
 
-        while not is_game_over_yet:
+            while not is_game_over_yet:
 
-            # Ask each of the players for their move
-            for player in self.players:
+                # Ask each of the players for their move
+                for player in self.players:
 
-                player.ui.output(f"***** {player}'s turn! ******")
-                player.ui.output(self.board)
-                move = player.make_move(self.board)
-
-                # Check that the move is legal in the context of the board
-                while not self.is_valid_move(move, player):
-                    player.ui.output(ILLEGAL_MOVE)
+                    player.ui.output(f"***** {player}'s turn! ******")
+                    player.ui.output(self.board)
                     move = player.make_move(self.board)
 
-                # Apply the player's move to the board since we now know it was legal
-                move_x, move_y = move[MOVE]
-                self.board.current_state[move_x][move_y] = move[GAME_TOKEN]
+                    # Check that the move is legal in the context of the board
+                    while not self.is_valid_move(move, player):
+                        player.ui.output(ILLEGAL_MOVE)
+                        move = player.make_move(self.board)
 
-                is_game_over_yet = self.is_game_over()
+                    # Apply the player's move to the board since we now know it was legal
+                    move_x, move_y = move[MOVE]
+                    self.board.current_state[move_x][move_y] = move[GAME_TOKEN]
 
-                # If the game has ended, break the player loop which in turn will break the game loop
-                if is_game_over_yet:
-                    break
+                    is_game_over_yet = self.is_game_over()
 
-        # Leave every concrete game to decide what it needs to do after a game is completed
-        self.finish_game()
-        self.release_resources()
+                    # If the game has ended, break the player loop which in turn will break the game loop
+                    if is_game_over_yet:
+                        break
+
+            # Leave every concrete game to decide what it needs to do after a game is completed
+            self.finish_game()
+        finally:
+            self.release_resources()
 
     @abstractmethod
     def is_valid_move(self, move: dict, player: Player) -> bool:  # pragma: no cover

@@ -17,6 +17,7 @@ class Game(ABC):
         # These fields will be used by network games only
         self.ip_address = None
         self.port = None
+        self.server_socket = None
 
     @abstractmethod
     def initialize_resources(self):  # pragma: no cover

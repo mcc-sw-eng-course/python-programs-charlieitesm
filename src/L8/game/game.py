@@ -23,6 +23,9 @@ class Game(ABC):
         raise NotImplementedError
 
     def play(self):  # pragma: no cover
+        # Let the concrete game to decide if it needs to initialize resources (like network connections)
+        self.initialize_resources()
+
         # This will contain the main game loop
         is_game_over_yet = False
 
@@ -50,7 +53,7 @@ class Game(ABC):
                 if is_game_over_yet:
                     break
 
-        # Leave every concrete game to decide what it need to do after a game is completed
+        # Leave every concrete game to decide what it needs to do after a game is completed
         self.finish_game()
         self.release_resources()
 

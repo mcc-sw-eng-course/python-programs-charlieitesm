@@ -25,6 +25,7 @@ class ServerGame(Game, ABC):
     def initialize_resources(self):
         ServerGame.LOGGER.info(f"Initializing server on port {self.port}")
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.managed_resources.append(self.server_socket)
         self.bind_to_port()
         self.wait_for_players_to_connect()
 
@@ -42,7 +43,6 @@ class ServerGame(Game, ABC):
                 self.server_socket.listen(1)
                 ServerGame.LOGGER.info(f"Listening on port: {self.port} successfully!")
 
-                self.managed_resources.append(self.server_socket)
                 # No need to try to connect again, break the trying loop
                 break
 

@@ -5,6 +5,7 @@ from L8.game.game import Game
 from L8.game.tic_tac_toe_game import TicTacToeLocalGame, TicTacToeGame, TicTacToeServerGame, TicTacToeClientGame
 from L8.player.ai.tic_tac_toe_brain import TicTacToeBrain
 from L8.player.ai_player import AIPlayer
+from L8.player.client_player import ClientPlayer
 from L8.player.human_player import HumanPlayer
 from L8.player.remote_player import RemotePlayer
 from L8.ui.ui import ConsoleUI
@@ -37,10 +38,9 @@ class GameFactory:
                 players.append(RemotePlayer(token_to_assign))
 
         elif args.game_mode == GameMode.CLIENT:
-            # Client games contain only a local RemotePlayer with a ClientUI and a RemotePlayer
-            for _ in (1, 2):
-                token_to_assign = tokens.pop(0)
-                players.append(RemotePlayer(token_to_assign))
+            # Client games contain only a local ClientPlayer with a ClientUI and a RemotePlayer
+            players.append(ClientPlayer(tokens.pop(0)))
+            players.append(RemotePlayer(tokens.pop(0)))
 
         # Build the AI Players, if needed and as many as needed to complete 2 players
         for i in range(len(players), 2):

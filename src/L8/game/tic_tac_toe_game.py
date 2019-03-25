@@ -79,8 +79,9 @@ class TicTacToeLocalGame(TicTacToeGame, LocalGame):
 
 
 class TicTacToeServerGame(TicTacToeGame, ServerGame):
-    def __init__(self, players: list):
+    def __init__(self, players: list, port: int):
         super().__init__(players)
+        self.port = port
 
 
 class TicTacToeGameUtil:

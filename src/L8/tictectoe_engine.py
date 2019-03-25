@@ -48,6 +48,13 @@ def parse_args():
                         choices=['easy', 'normal', 'hard'],
                         help="Choose the game you want to play.")
 
+    parser.add_argument('--port',
+                        metavar='PORT',
+                        type=int,
+                        default=8081,
+                        help="The port on which you want the server to listen for connections "
+                             "or the clients to connect to.")
+
     args = parser.parse_args()
 
     if args.game_mode == "local":

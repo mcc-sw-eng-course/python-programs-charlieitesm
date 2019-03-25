@@ -39,6 +39,6 @@ class GameFactory:
             if args.game_mode == GameMode.LOCAL:
                 new_game = TicTacToeLocalGame(players)
             elif args.game_mode == GameMode.SERVER:
-                new_game = TicTacToeServerGame(players)
+                new_game = TicTacToeServerGame(players, args.port)
 
         return new_game

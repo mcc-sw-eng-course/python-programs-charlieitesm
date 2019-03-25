@@ -3,6 +3,7 @@ from abc import ABC
 from L8.board.board import Board
 from L8.board.tic_tac_toe_board import TicTacToeBoard
 from L8.constants.constants import MOVE
+from L8.game.client_game import ClientGame
 from L8.game.game import Game
 from L8.game.game_token import GameToken
 from L8.game.local_game import LocalGame
@@ -81,6 +82,13 @@ class TicTacToeLocalGame(TicTacToeGame, LocalGame):
 class TicTacToeServerGame(TicTacToeGame, ServerGame):
     def __init__(self, players: list, port: int):
         super().__init__(players)
+        self.port = port
+
+
+class TicTacToeClientGame(TicTacToeGame, ClientGame):
+    def __init__(self, players: list, ip_address: str, port: int):
+        super().__init__(players)
+        self.ip_address = ip_address
         self.port = port
 
 

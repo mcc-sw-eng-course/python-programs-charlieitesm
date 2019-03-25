@@ -19,6 +19,9 @@ class Game(ABC):
         self.port = None
         self.server_socket = None
 
+        # This will allow us to keep track and close all of the resources that need to be released
+        self.managed_resources = []
+
     @abstractmethod
     def initialize_resources(self):  # pragma: no cover
         raise NotImplementedError

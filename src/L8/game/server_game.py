@@ -39,6 +39,7 @@ class ServerGame(Game, ABC):
                 self.server_socket.listen(1)
                 ServerGame.LOGGER.info(f"Listening on port: {self.port} successfully!")
 
+                self.managed_resources.append(self.server_socket)
                 # No need to try to connect again, break the trying loop
                 break
 
@@ -57,5 +58,10 @@ class ServerGame(Game, ABC):
     def release_resources(self):
         ServerGame.LOGGER.info(f"Releasing server resources for port... {self.port}")
 
-        if self.server_socket:
-            self.server_socket.close()
+        for mr in self.managed_resources:
+            if mr:
+                try:
+                    mr.close()
+                except:
+                    ServerGame.LOGGER.error(f"There was a problem trying to close resoure {str(mr)}")
+                    ServerGame.LOGGER.exception("Exception thrown")

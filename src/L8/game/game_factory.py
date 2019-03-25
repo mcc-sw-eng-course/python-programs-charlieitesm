@@ -2,7 +2,7 @@ from argparse import Namespace
 
 from L8.constants.constants import GameName, GameMode
 from L8.game.game import Game
-from L8.game.tic_tac_toe_game import TicTacToeLocalGame, TicTacToeGame, TicTacToeServerGame
+from L8.game.tic_tac_toe_game import TicTacToeLocalGame, TicTacToeGame, TicTacToeServerGame, TicTacToeClientGame
 from L8.player.ai.tic_tac_toe_brain import TicTacToeBrain
 from L8.player.ai_player import AIPlayer
 from L8.player.human_player import HumanPlayer
@@ -25,15 +25,20 @@ class GameFactory:
             tokens = TicTacToeGame.LEGAL_TOKENS.copy()
             ai_brain = TicTacToeBrain(args.level)
 
+        # Build the player instances
         if args.game_mode == GameMode.LOCAL:
-            # Build the player instances
             for i in range(args.human_players):
                 token_to_assign = tokens.pop(0)
                 players.append(HumanPlayer(ui, token_to_assign))
 
         elif args.game_mode == GameMode.SERVER:
-            # Build the player instances
             for i in range(args.human_players):
+                token_to_assign = tokens.pop(0)
+                players.append(RemotePlayer(token_to_assign))
+
+        elif args.game_mode == GameMode.CLIENT:
+            # Client games contain only a local RemotePlayer with a ClientUI and a RemotePlayer
+            for _ in (1, 2):
                 token_to_assign = tokens.pop(0)
                 players.append(RemotePlayer(token_to_assign))
 
@@ -48,5 +53,7 @@ class GameFactory:
                 new_game = TicTacToeLocalGame(players)
             elif args.game_mode == GameMode.SERVER:
                 new_game = TicTacToeServerGame(players, args.port)
+            elif args.game_mode == GameMode.CLIENT:
+                new_game = TicTacToeClientGame(players, args.ip_address, args.port)
 
         return new_game

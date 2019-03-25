@@ -2,7 +2,7 @@ from argparse import Namespace
 
 from L8.constants.constants import GameName, GameMode
 from L8.game.game import Game
-from L8.game.tic_tac_toe_game import TicTacToeLocalGame, TicTacToeGame
+from L8.game.tic_tac_toe_game import TicTacToeLocalGame, TicTacToeGame, TicTacToeServerGame
 from L8.player.ai.tic_tac_toe_brain import TicTacToeBrain
 from L8.player.ai_player import AIPlayer
 from L8.player.human_player import HumanPlayer
@@ -38,5 +38,7 @@ class GameFactory:
         if args.game == GameName.TIC_TAC_TOE:
             if args.game_mode == GameMode.LOCAL:
                 new_game = TicTacToeLocalGame(players)
+            elif args.game_mode == GameMode.SERVER:
+                new_game = TicTacToeServerGame(players)
 
         return new_game

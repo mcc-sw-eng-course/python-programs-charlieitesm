@@ -54,7 +54,7 @@ def parse_args():
         args.game_mode = GameMode.LOCAL
     elif args.game_mode == "client":
         args.game_mode = GameMode.CLIENT
-    else:
+    elif args.game_mode == "server":
         args.game_mode = GameMode.SERVER
 
     if args.ui == "console":

@@ -58,9 +58,10 @@ class ServerGame(Game, ABC):
     def wait_for_players_to_connect(self):
         # Wait for connections from RemotePlayers only, AI players are ready to play!
         players_pending_to_connect = [p for p in self.players if type(p) is RemotePlayer]
-        ServerGame.LOGGER.info("Waiting for players to connect...")
 
         while players_pending_to_connect:
+            ServerGame.LOGGER.info("Waiting for players to connect...")
+
             connection, client_address = self.server_socket.accept()
             self.managed_resources.append(connection)
 

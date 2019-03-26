@@ -5,10 +5,8 @@ from abc import ABC
 
 from L8.constants.network_messages import READY_MSG
 from L8.game.game import Game
+
 # Create a logger for later troubleshooting
-from L8.player.client_player import ClientPlayer
-from L8.player.remote_player import RemotePlayer
-from L8.ui.ui import ClientUI, RemoteUI
 
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(asctime)s] %(levelname)s: %(message)s',
@@ -36,8 +34,6 @@ class ClientGame(Game, ABC):
         tries = 0
         connected_to_server = False
 
-        client_player, remote_player = self.get_client_and_remote_players()
-
         while tries < max_tries:
             tries += 1
 
@@ -45,10 +41,6 @@ class ClientGame(Game, ABC):
                 # self.server_socket.settimeout(10)
                 self.server_socket.connect((self.ip_address, self.port))
                 connected_to_server = True
-
-                # Add the RemoteUIs to the player so that they can communicate with the server
-                client_player.ui = ClientUI(self.server_socket)
-                remote_player.ui = RemoteUI(self.server_socket)
 
                 ClientGame.LOGGER.info(f"Connected to {self.ip_address}:{self.port} successfully!")
 
@@ -69,36 +61,15 @@ class ClientGame(Game, ABC):
 
     def wait_for_game_to_start(self):
         is_client_waiting = True
-        client_player = self.get_client_and_remote_players()[0]
 
         while is_client_waiting:
             ClientGame.LOGGER.info(f"Client connected, waiting for game server to start...")
             server_response = self.server_socket.recv(2).decode()
 
             if server_response.startswith(READY_MSG):
-                desired_position_of_client = int(server_response[1])
-
-                if self.players[desired_position_of_client] is not client_player:
-                    # Switch players in the players list so that the client is in the same order as in the server
-                    self.players[0], self.players[1] = self.players[1], self.players[0]
                 is_client_waiting = False
             else:
                 time.sleep(1)
-
-    def get_client_and_remote_players(self) -> tuple:
-        client_player = None
-        remote_player = None
-
-        for p in self.players:
-            if isinstance(p, ClientPlayer):
-                client_player = p
-            elif isinstance(p, RemotePlayer):
-                remote_player = p
-
-        assert client_player is not None
-        assert remote_player is not None
-
-        return client_player, remote_player
 
     # noinspection PyBroadException
     def release_resources(self):

@@ -3,8 +3,8 @@ import socket
 import time
 from abc import ABC
 
-from L8.constants.network_messages import READY_MSG
 from L8.game.game import Game
+from L8.messages.network_messages import READY_MSG, ASK_MOVE, INVALID_MOVE
 
 # Create a logger for later troubleshooting
 
@@ -70,6 +70,30 @@ class ClientGame(Game, ABC):
                 is_client_waiting = False
             else:
                 time.sleep(1)
+
+    def play(self):  # pragma: no cover
+        try:
+            # Let the concrete game to decide if it needs to initialize resources (like network connections)
+            self.initialize_resources()
+
+            # This will contain the main game loop
+            is_game_over_yet = False
+
+            client_player = self.players[0]  # Only the client is in ClientGames, the rest is handled by the server
+
+            while not is_game_over_yet:
+
+                server_message = self.server_socket.recv(8).decode()
+
+                if server_message.startswith(ASK_MOVE):
+                    raise NotImplementedError
+                elif server_message.startswith(INVALID_MOVE):
+                    raise NotImplementedError
+
+            # Leave every concrete game to decide what it needs to do after a game is completed
+            self.finish_game()
+        finally:
+            self.release_resources()
 
     # noinspection PyBroadException
     def release_resources(self):

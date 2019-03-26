@@ -1,4 +1,5 @@
 # Engine messages
+
 SHUTTING_DOWN = "Tic Tec Toe Engine Shutting down..."
 INITIALIZING_LOCAL_GAME = "Initializing a local game..."
 FINISH_LOCAL_GAME = "Finishing local game..."

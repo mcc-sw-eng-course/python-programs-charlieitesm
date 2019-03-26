@@ -2,8 +2,8 @@ import logging
 import socket
 from abc import ABC
 
-from L8.constants.network_messages import READY_MSG
 from L8.game.game import Game
+from L8.messages.network_messages import READY_MSG
 from L8.player.remote_player import RemotePlayer
 from L8.ui.ui import RemoteUI
 

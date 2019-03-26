@@ -1,7 +1,9 @@
 import logging
 import socket
+import time
 from abc import ABC
 
+from L8.constants.network_messages import READY_MSG
 from L8.game.game import Game
 # Create a logger for later troubleshooting
 from L8.player.client_player import ClientPlayer
@@ -27,6 +29,7 @@ class ClientGame(Game, ABC):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.managed_resources.append(self.server_socket)
         self.connect_to_server()
+        self.wait_for_game_to_start()
 
     def connect_to_server(self):
         max_tries = 3
@@ -39,7 +42,7 @@ class ClientGame(Game, ABC):
             tries += 1
 
             try:
-                self.server_socket.settimeout(10)
+                # self.server_socket.settimeout(10)
                 self.server_socket.connect((self.ip_address, self.port))
                 connected_to_server = True
 
@@ -63,6 +66,23 @@ class ClientGame(Game, ABC):
                     raise e
         if not connected_to_server:
             raise ConnectionError(f"Couldn't connect to {self.ip_address}:{self.port}, aborting...")
+
+    def wait_for_game_to_start(self):
+        is_client_waiting = True
+        client_player = self.get_client_and_remote_players()[0]
+
+        while is_client_waiting:
+            server_response = self.server_socket.recv(2)
+
+            if server_response.startswith(READY_MSG):
+                desired_position_of_client = int(server_response[1])
+
+                if self.players[desired_position_of_client] is not client_player:
+                    # Switch players in the players list so that the client is in the same order as in the server
+                    self.players[0], self.players[1] = self.players[1], self.players[0]
+                is_client_waiting = False
+            else:
+                time.sleep(1)
 
     def get_client_and_remote_players(self) -> tuple:
         client_player = None

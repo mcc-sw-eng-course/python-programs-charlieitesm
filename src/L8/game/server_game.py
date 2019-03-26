@@ -3,6 +3,7 @@ import socket
 import time
 from abc import ABC
 
+from L8.constants.network_messages import READY_MSG
 from L8.game.game import Game
 from L8.player.remote_player import RemotePlayer
 from L8.ui.ui import RemoteUI
@@ -28,6 +29,7 @@ class ServerGame(Game, ABC):
         self.managed_resources.append(self.server_socket)
         self.bind_to_port()
         self.wait_for_players_to_connect()
+        self.notify_players_to_get_ready()
 
     def bind_to_port(self):
         max_tries = 3
@@ -75,6 +77,14 @@ class ServerGame(Game, ABC):
 
         ServerGame.LOGGER.info("All players are connected, beginning the game GOOD LUCK!...")
 
+    def notify_players_to_get_ready(self):
+        """
+        Let know each of the players the order in which they are going to be playing so that they can simulate the game
+        properly and synced.
+        """
+        for order, player in enumerate(self.players):
+            player.ui.output(f"{READY_MSG}{order}")
+
     # noinspection PyBroadException
     def release_resources(self):
         ServerGame.LOGGER.info(f"Releasing server resources for port... {self.port}")
@@ -84,5 +94,5 @@ class ServerGame(Game, ABC):
                 try:
                     mr.close()
                 except:
-                    ServerGame.LOGGER.error(f"There was a problem trying to close resoure {str(mr)}")
+                    ServerGame.LOGGER.error(f"There was a problem trying to close resource {str(mr)}")
                     ServerGame.LOGGER.exception("Exception thrown")

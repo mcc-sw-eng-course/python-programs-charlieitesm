@@ -199,3 +199,8 @@ class TicTacToeGameUtil:
         else:
             return False
 
+    @staticmethod
+    def get_token_from_str(token_str: str) -> GameToken:
+        for gt in TicTacToeGame.LEGAL_TOKENS:
+            if str(gt).lower() == token_str.lower():
+                return gt

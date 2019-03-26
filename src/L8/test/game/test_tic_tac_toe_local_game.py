@@ -9,8 +9,8 @@ from L8.ui.ui import DummyUI
 class TestTicTacToeLocalGame(TestCase):
 
     def setUp(self):
-        self.x_token = [t for t in TicTacToeLocalGame.LEGAL_TOKENS if t.token_symbol == "X"][0]
-        self.o_token = [t for t in TicTacToeLocalGame.LEGAL_TOKENS if t.token_symbol == "O"][0]
+        self.x_token = TicTacToeGameUtil.get_token_from_str("X")
+        self.o_token = TicTacToeGameUtil.get_token_from_str("O")
 
         # The player doesn't matter for TicTacToe, let's create a dummy one
         self.x_player = HumanPlayer(DummyUI(), self.x_token)

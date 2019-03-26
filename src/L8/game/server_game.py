@@ -1,6 +1,5 @@
 import logging
 import socket
-import time
 from abc import ABC
 
 from L8.constants.network_messages import READY_MSG
@@ -71,9 +70,6 @@ class ServerGame(Game, ABC):
 
             remote_player = players_pending_to_connect.pop(0)
             remote_player.ui = RemoteUI(connection)
-
-            # Wait for connections every second in order to avoid making an airplane out of our computer
-            time.sleep(1)
 
         ServerGame.LOGGER.info("All players are connected, beginning the game GOOD LUCK!...")
 

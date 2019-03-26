@@ -72,7 +72,8 @@ class ClientGame(Game, ABC):
         client_player = self.get_client_and_remote_players()[0]
 
         while is_client_waiting:
-            server_response = self.server_socket.recv(2)
+            ClientGame.LOGGER.info(f"Client connected, waiting for game server to start...")
+            server_response = self.server_socket.recv(2).decode()
 
             if server_response.startswith(READY_MSG):
                 desired_position_of_client = int(server_response[1])

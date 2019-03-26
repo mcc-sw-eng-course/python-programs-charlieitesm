@@ -66,7 +66,7 @@ class RemoteUI(UI):  # pragma: no cover
 
     def input(self, message: str) -> str:
         self.output(f"{message}: ")
-        recv_input = self.connection.recv(32)
+        recv_input = self.connection.recv(3)
         return recv_input
 
     def output(self, message: str):

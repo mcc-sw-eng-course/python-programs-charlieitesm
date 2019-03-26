@@ -7,11 +7,19 @@ class Board(ABC):
         self.current_state = [[]]
 
     @abstractmethod
-    def init_board(self): # pragma: no cover
+    def init_board(self):  # pragma: no cover
         raise NotImplementedError
 
     @abstractmethod
-    def __str__(self) -> str: # pragma: no cover
+    def __str__(self) -> str:  # pragma: no cover
+        raise NotImplementedError
+
+    @abstractmethod
+    def serialize(self) -> str:
+        raise NotImplementedError
+
+    @abstractmethod
+    def deserialize(self, serialized_board: str) -> object:
         raise NotImplementedError
 
     def get_empty_spaces_coordinates(self) -> list:

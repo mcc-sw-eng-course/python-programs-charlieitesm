@@ -113,6 +113,10 @@ class ServerGame(Game, ABC):
                     if is_game_over_yet:
                         break
 
+            # Let the players know that the game is over and they can serialize the final board
+            for player in self.players:
+                player.ui.output(f"{FINISH_GAME}{self.board.serialize()}")
+
             # Leave every concrete game to decide what it needs to do after a game is completed
             self.finish_game()
         finally:

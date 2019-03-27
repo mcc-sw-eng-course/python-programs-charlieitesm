@@ -2,8 +2,9 @@ import logging
 import socket
 from abc import ABC
 
+from L8.constants.constants import MOVE, GAME_TOKEN
 from L8.game.game import Game
-from L8.messages.network_messages import READY_MSG
+from L8.messages.network_messages import *
 from L8.player.remote_player import RemotePlayer
 from L8.ui.ui import RemoteUI
 
@@ -79,7 +80,43 @@ class ServerGame(Game, ABC):
         properly and synced.
         """
         for order, player in enumerate(self.players):
-            player.ui.output(f"{READY_MSG}{order}")
+            player.ui.output(f"{READY_MSG}")
+
+    def play(self):  # pragma: no cover
+        try:
+            # Let the concrete game to decide if it needs to initialize resources (like network connections)
+            self.initialize_resources()
+
+            # This will contain the main game loop
+            is_game_over_yet = False
+
+            while not is_game_over_yet:
+
+                # Ask each of the players for their move
+                for player in self.players:
+
+                    player.ui.output(f"{SIMPLE_MSG}***** {player}'s turn! ******")
+                    move = player.make_move(self.board)
+
+                    # Check that the move is legal in the context of the board
+                    while not self.is_valid_move(move, player):
+                        player.ui.output(f"{ILLEGAL_MOVE}")
+                        move = player.make_move(self.board)
+
+                    # Apply the player's move to the board since we now know it was legal
+                    move_x, move_y = move[MOVE]
+                    self.board.current_state[move_x][move_y] = move[GAME_TOKEN]
+
+                    is_game_over_yet = self.is_game_over()
+
+                    # If the game has ended, break the player loop which in turn will break the game loop
+                    if is_game_over_yet:
+                        break
+
+            # Leave every concrete game to decide what it needs to do after a game is completed
+            self.finish_game()
+        finally:
+            self.release_resources()
 
     # noinspection PyBroadException
     def release_resources(self):

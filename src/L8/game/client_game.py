@@ -3,10 +3,12 @@ import socket
 import time
 from abc import ABC
 
+from L8.constants.constants import MOVE
 from L8.game.game import Game
-from L8.messages.network_messages import READY_MSG, ASK_MOVE, INVALID_MOVE
-
+from L8.messages.english import ILLEGAL_MOVE_MSG, INVALID_FORMAT_FOR_MOVE_MSG
+from L8.messages.network_messages import READY_MSG, ASK_MOVE, INVALID_MOVE, ILLEGAL_MOVE, SIMPLE_MSG, FINISH_GAME
 # Create a logger for later troubleshooting
+from L8.player.player import Player
 
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(asctime)s] %(levelname)s: %(message)s',
@@ -84,16 +86,36 @@ class ClientGame(Game, ABC):
             while not is_game_over_yet:
 
                 server_message = self.server_socket.recv(8).decode()
+                server_command = server_message[:3]
 
-                if server_message.startswith(ASK_MOVE):
-                    raise NotImplementedError
-                elif server_message.startswith(INVALID_MOVE):
-                    raise NotImplementedError
+                if server_command.startswith(ASK_MOVE):
+                    self.board.deserialize(server_message[3:])
+                    self.ask_and_send_move_to_server(client_player, )
+
+                elif server_command.startswith(INVALID_MOVE):
+                    self.board.deserialize(server_message[3:])
+                    client_player.ui.output(INVALID_FORMAT_FOR_MOVE_MSG)
+                    self.ask_and_send_move_to_server(client_player)
+
+                elif server_command.startswith(ILLEGAL_MOVE):
+                    # The server will ask separately for a new move, so just print the message
+                    client_player.ui.output(ILLEGAL_MOVE_MSG)
+
+                elif server_command.startswith(SIMPLE_MSG):
+                    client_player.ui.output(server_message[3:])
+
+                elif server_command.startswith(FINISH_GAME):
+                    self.board.deserialize(server_message[3:])
+                    is_game_over_yet = True
 
             # Leave every concrete game to decide what it needs to do after a game is completed
             self.finish_game()
         finally:
             self.release_resources()
+
+    def ask_and_send_move_to_server(self, player: Player):
+        move = player.make_move(self.board)[MOVE]
+        self.server_socket.send(f"{move[0]},{move[1]}".encode())
 
     # noinspection PyBroadException
     def release_resources(self):

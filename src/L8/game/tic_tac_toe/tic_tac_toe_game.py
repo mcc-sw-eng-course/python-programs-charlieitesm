@@ -81,6 +81,13 @@ class TicTacToeServerGame(TicTacToeGame, ServerGame):
         super().__init__(players)
         self.port = port
 
+    # Override the method so that the clients are not notified and are responsible for determining the final messages
+    #  instead
+    def finish_game(self):
+        winner_result = TICTACTOE_DRAW_MSG if not self.winner else f"{WINNER_MSG} {self.winner}"
+        final_message = "\n".join([TICTACTOE_ENDING_MSG, str(self.board), winner_result])
+        self.LOGGER.info(final_message)
+
 
 class TicTacToeClientGame(TicTacToeGame, ClientGame):
     def __init__(self, players: list, ip_address: str, port: int):
@@ -88,6 +95,3 @@ class TicTacToeClientGame(TicTacToeGame, ClientGame):
         self.ip_address = ip_address
         self.port = port
 
-    def finish_game(self):
-        self.winner = TicTacToeGameUtil.get_winner(self.board)
-        super().finish_game()

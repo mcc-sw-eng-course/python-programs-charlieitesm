@@ -7,7 +7,7 @@ from L8.game.game import Game
 from L8.game.local_game import LocalGame
 from L8.game.server_game import ServerGame
 from L8.game.tic_tac_toe.util import TicTacToeGameUtil
-from L8.messages.english import TICTACTOE_ENDING_MSG, TICTACTOE_DRAW_MSG, WINNER_MSG
+from L8.messages.english import TICTACTOE_ENDING_MSG, TICTACTOE_DRAW_MSG, WINNER_MSG, YOU_WIN_MSG, YOU_LOSE_MSG
 from L8.player.player import Player
 
 
@@ -95,3 +95,16 @@ class TicTacToeClientGame(TicTacToeGame, ClientGame):
         self.ip_address = ip_address
         self.port = port
 
+    def finish_game(self):
+        winner_token = TicTacToeGameUtil.get_winner(self.board)
+        client_player = self.players[0]
+
+        if not winner_token:
+            result_msg = TICTACTOE_DRAW_MSG
+        elif winner_token == client_player.game_token:
+            result_msg = YOU_WIN_MSG
+        else:
+            result_msg = YOU_LOSE_MSG
+
+        final_message = "\n".join([TICTACTOE_ENDING_MSG, str(self.board), result_msg])
+        client_player.ui.output(final_message)

@@ -42,9 +42,10 @@ class GameFactory:
             players.append(HumanPlayer(ui, tokens.pop(0)))
 
         # Build the AI Players, if needed and as many as needed to complete 2 players
-        for i in range(len(players), 2):
-            token_to_assign = tokens.pop(0)
-            players.append(AIPlayer(ai_brain, token_to_assign))
+        if args.game_mode != GameMode.CLIENT:
+            for i in range(len(players), 2):
+                token_to_assign = tokens.pop(0)
+                players.append(AIPlayer(ai_brain, token_to_assign))
 
         # Build the game
         if args.game == GameName.TIC_TAC_TOE:

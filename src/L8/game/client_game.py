@@ -105,6 +105,7 @@ class ClientGame(Game, ABC):
                     client_player.ui.output(server_message[3:])
 
                 elif server_command.startswith(FINISH_GAME):
+                    # The game is over, so let's record the last state of the board as reported by the server
                     self.board.deserialize(server_message[3:])
                     is_game_over_yet = True
 

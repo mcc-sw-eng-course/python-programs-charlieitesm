@@ -7,6 +7,8 @@ FINISH_LOCAL_GAME = "Finishing local game..."
 # Game messages
 ILLEGAL_MOVE_MSG = "The move is illegal, please try again..."
 WINNER_MSG = "The winner is:"
+YOU_WIN_MSG = "You WIN!"
+YOU_LOSE_MSG = "You lose!"
 
 # TicTacToe messages
 TICTACTOE_ENDING_MSG = "GAME OVER! Final results:"

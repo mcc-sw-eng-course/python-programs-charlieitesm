@@ -83,12 +83,12 @@ class Game(ABC):
     def release_resources(self):  # pragma: no cover
         raise NotImplementedError
 
-    def token_to_player(self, token_str: GameToken) -> Player:
+    def token_to_player(self, winning_token: GameToken) -> Player:
         """
         Get the player holding the game_token represented by token_str
-        :param token_str: a str representing the game_token to look for
+        :param winning_token: a str representing the game_token to look for
         :return: a Player holding the game_token represented by token_str, None if no one was found
         """
         for p in self.players:
-            if token_str == p.game_token:
+            if winning_token == p.game_token:
                 return p

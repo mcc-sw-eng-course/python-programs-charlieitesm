@@ -91,6 +91,10 @@ class TicTacToeClientGame(TicTacToeGame, ClientGame):
         self.ip_address = ip_address
         self.port = port
 
+    def finish_game(self):
+        self.winner = TicTacToeGameUtil.get_winner(self.board)
+        super().finish_game()
+
 
 class TicTacToeGameUtil:
 

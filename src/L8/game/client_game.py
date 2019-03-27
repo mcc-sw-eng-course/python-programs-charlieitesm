@@ -108,6 +108,8 @@ class ClientGame(Game, ABC):
                     self.board.deserialize(server_message[3:])
                     is_game_over_yet = True
 
+                time.sleep(1)
+
             # Leave every concrete game to decide what it needs to do after a game is completed
             self.finish_game()
         finally:

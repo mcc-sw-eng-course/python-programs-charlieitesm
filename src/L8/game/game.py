@@ -3,7 +3,7 @@ from abc import abstractmethod, ABC
 from L8.board.board import Board
 from L8.constants.constants import MOVE, GAME_TOKEN
 from L8.game.game_token import GameToken
-from L8.messages.english import ILLEGAL_MOVE
+from L8.messages.english import ILLEGAL_MOVE_MSG
 from L8.player.player import Player
 
 
@@ -49,7 +49,7 @@ class Game(ABC):
 
                     # Check that the move is legal in the context of the board
                     while not self.is_valid_move(move, player):
-                        player.ui.output(ILLEGAL_MOVE)
+                        player.ui.output(ILLEGAL_MOVE_MSG)
                         move = player.make_move(self.board)
 
                     # Apply the player's move to the board since we now know it was legal

@@ -8,7 +8,7 @@ from L8.game.game import Game
 from L8.game.game_token import GameToken
 from L8.game.local_game import LocalGame
 from L8.game.server_game import ServerGame
-from L8.messages.english import TICTACTOE_ENDING_MESSAGE, TICTACTOE_DRAW_MESSAGE, WINNER_MESSAGE
+from L8.messages.english import TICTACTOE_ENDING_MSG, TICTACTOE_DRAW_MSG, WINNER_MSG
 from L8.player.player import Player
 
 
@@ -67,8 +67,8 @@ class TicTacToeGame(Game, ABC):
         Prepares and outputs to each of the players a message with the results
         :return:
         """
-        winner_result = TICTACTOE_DRAW_MESSAGE if not self.winner else f"{WINNER_MESSAGE} {self.winner}"
-        final_message = "\n".join([TICTACTOE_ENDING_MESSAGE, str(self.board), winner_result])
+        winner_result = TICTACTOE_DRAW_MSG if not self.winner else f"{WINNER_MSG} {self.winner}"
+        final_message = "\n".join([TICTACTOE_ENDING_MSG, str(self.board), winner_result])
 
         for p in self.players:
             p.ui.output(final_message)

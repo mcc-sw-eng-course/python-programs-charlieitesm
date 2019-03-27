@@ -79,7 +79,7 @@ class ServerGame(Game, ABC):
         Let know each of the players the order in which they are going to be playing so that they can simulate the game
         properly and synced.
         """
-        for order, player in enumerate(self.players):
+        for player in self.players:
             player.ui.output(f"{READY_MSG}")
 
     def play(self):  # pragma: no cover

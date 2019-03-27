@@ -1,4 +1,5 @@
 import socket
+import time
 from abc import abstractmethod, ABC
 
 
@@ -71,3 +72,4 @@ class RemoteUI(UI):  # pragma: no cover
 
     def output(self, message: str):
         self.connection.send(message.encode())
+        time.sleep(1)

@@ -2,7 +2,8 @@ from argparse import Namespace
 
 from L8.constants.constants import GameName, GameMode
 from L8.game.game import Game
-from L8.game.tic_tac_toe_game import TicTacToeLocalGame, TicTacToeGame, TicTacToeServerGame, TicTacToeClientGame
+from L8.game.game_token import TIC_TAC_TOE_TOKENS
+from L8.game.tic_tac_toe.tic_tac_toe_game import TicTacToeLocalGame, TicTacToeServerGame, TicTacToeClientGame
 from L8.player.ai.tic_tac_toe_brain import TicTacToeBrain
 from L8.player.ai_player import AIPlayer
 from L8.player.human_player import HumanPlayer
@@ -22,7 +23,7 @@ class GameFactory:
 
         # Get the appropriate tokens
         if args.game == GameName.TIC_TAC_TOE:
-            tokens = TicTacToeGame.LEGAL_TOKENS.copy()
+            tokens = TIC_TAC_TOE_TOKENS.copy()
             ai_brain = TicTacToeBrain(args.level)
 
         # Build the player instances

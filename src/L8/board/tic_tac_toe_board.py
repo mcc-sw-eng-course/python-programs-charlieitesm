@@ -1,5 +1,5 @@
 from L8.board.board import Board
-from L8.game.tic_tac_toe_game import TicTacToeGameUtil
+from L8.game.tic_tac_toe.tic_tac_toe_game import TicTacToeGameUtil
 
 
 class TicTacToeBoard(Board):

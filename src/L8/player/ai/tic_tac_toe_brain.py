@@ -1,12 +1,11 @@
 import math
-
 import random
 
 from L8.board.board import Board
 from L8.board.tic_tac_toe_board import TicTacToeBoard
 from L8.constants.constants import GameLevel
-from L8.game.game_token import GameToken
-from L8.game.tic_tac_toe_game import TicTacToeGame, TicTacToeGameUtil
+from L8.game.game_token import GameToken, TIC_TAC_TOE_TOKENS
+from L8.game.tic_tac_toe.tic_tac_toe_game import TicTacToeGameUtil
 from L8.player.ai.brain import Brain
 
 
@@ -31,7 +30,7 @@ class TicTacToeBrain(Brain):
             return self.hard_mode(board, game_token)
 
     def hard_mode(self, board: Board, game_token: GameToken) -> tuple:
-        opponent_token = [t for t in TicTacToeGame.LEGAL_TOKENS if t is not game_token][0]
+        opponent_token = [t for t in TIC_TAC_TOE_TOKENS if t is not game_token][0]
         minimax_result = self.minimax(board, game_token, opponent_token, is_ais_turn=True)
         move = minimax_result[1]
         return move

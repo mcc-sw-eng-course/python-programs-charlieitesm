@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from L8.constants.constants import MOVE, GAME_TOKEN
-from L8.game.tic_tac_toe_game import TicTacToeLocalGame, TicTacToeGameUtil
+from L8.game.tic_tac_toe.tic_tac_toe_game import TicTacToeLocalGame, TicTacToeGameUtil
 from L8.player.human_player import HumanPlayer
 from L8.ui.ui import DummyUI
 

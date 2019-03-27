@@ -6,3 +6,6 @@ class GameToken:
 
     def __str__(self):
         return self.token_symbol
+
+
+TIC_TAC_TOE_TOKENS = [GameToken("X"), GameToken("O")]

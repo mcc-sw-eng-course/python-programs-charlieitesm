@@ -2,14 +2,14 @@ from unittest import TestCase
 
 from L8.board.tic_tac_toe_board import TicTacToeBoard
 from L8.constants.constants import GameLevel
-from L8.game.tic_tac_toe_game import TicTacToeGame
+from L8.game.game_token import TIC_TAC_TOE_TOKENS
 from L8.player.ai.tic_tac_toe_brain import TicTacToeBrain
 
 
 class TestTicTacToeBrain(TestCase):
 
     def setUp(self):
-        legal_tokens = TicTacToeGame.LEGAL_TOKENS
+        legal_tokens = TIC_TAC_TOE_TOKENS
 
         for t in legal_tokens:
             if str(t) == "X":

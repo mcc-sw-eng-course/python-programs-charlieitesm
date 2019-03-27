@@ -13,7 +13,7 @@ from L8.player.player import Player
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(asctime)s] %(levelname)s: %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
-                    filename='tictectoe-engine_network.log')
+                    filename='tictectoe-engine_network-client.log')
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
 
@@ -66,7 +66,7 @@ class ClientGame(Game, ABC):
 
         while is_client_waiting:
             ClientGame.LOGGER.info(f"Client connected, waiting for game server to start...")
-            server_response = self.server_socket.recv(2).decode()
+            server_response = self.server_socket.recv(1024).decode()
 
             if server_response.startswith(READY_MSG):
                 is_client_waiting = False
@@ -85,12 +85,12 @@ class ClientGame(Game, ABC):
 
             while not is_game_over_yet:
 
-                server_message = self.server_socket.recv(8).decode()
+                server_message = self.server_socket.recv(1024).decode()
                 server_command = server_message[:3]
 
                 if server_command.startswith(ASK_MOVE):
                     self.board.deserialize(server_message[3:])
-                    self.ask_and_send_move_to_server(client_player, )
+                    self.ask_and_send_move_to_server(client_player)
 
                 elif server_command.startswith(INVALID_MOVE):
                     self.board.deserialize(server_message[3:])
@@ -114,6 +114,7 @@ class ClientGame(Game, ABC):
             self.release_resources()
 
     def ask_and_send_move_to_server(self, player: Player):
+        player.ui.output(self.board)
         move = player.make_move(self.board)[MOVE]
         self.server_socket.send(f"{move[0]},{move[1]}".encode())
 
@@ -124,7 +125,7 @@ class ClientGame(Game, ABC):
         for mr in self.managed_resources:
             if mr:
                 try:
-                    mr.shutdown(socket.SHUT_RDWR)
+                    # We could use mr.shutdown(socket.SHUT_RDWR)
                     mr.close()
                 except:
                     ClientGame.LOGGER.error(f"There was a problem trying to close resoure {str(mr)}")

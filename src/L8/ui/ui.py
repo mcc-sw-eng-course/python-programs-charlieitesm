@@ -65,8 +65,8 @@ class RemoteUI(UI):  # pragma: no cover
             raise ConnectionError("Connection for RemoteUI didn't start properly!")
 
     def input(self, message: str) -> str:
-        self.output(f"{message}: ")
-        recv_input = self.connection.recv(3)
+        self.output(f"{message}")
+        recv_input = self.connection.recv(1024).decode()
         return recv_input
 
     def output(self, message: str):

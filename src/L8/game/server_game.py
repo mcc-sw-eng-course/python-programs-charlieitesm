@@ -80,7 +80,7 @@ class ServerGame(Game, ABC):
         properly and synced.
         """
         for player in self.players:
-            player.ui.output(f"{READY_MSG}")
+            player.ui.output(f"{READY_MSG}{str(player.game_token)}")
 
     def play(self):  # pragma: no cover
         try:

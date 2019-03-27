@@ -13,6 +13,7 @@ class Game(ABC):
         self.board = board
         self.players = players
         self.winner = None
+        self.legal_tokens = None
 
         # These fields will be used by network games only
         self.ip_address = None
@@ -92,3 +93,8 @@ class Game(ABC):
         for p in self.players:
             if winning_token == p.game_token:
                 return p
+
+    def str_to_game_token(self, str_token: str) -> GameToken:
+        for gt in self.legal_tokens:
+            if str_token.upper() == str(gt).upper():
+                return gt

@@ -4,6 +4,7 @@ from L8.board.tic_tac_toe_board import TicTacToeBoard
 from L8.constants.constants import MOVE
 from L8.game.client_game import ClientGame
 from L8.game.game import Game
+from L8.game.game_token import TIC_TAC_TOE_TOKENS
 from L8.game.local_game import LocalGame
 from L8.game.server_game import ServerGame
 from L8.game.tic_tac_toe.util import TicTacToeGameUtil
@@ -15,6 +16,7 @@ class TicTacToeGame(Game, ABC):
 
     def __init__(self, players: list):
         super().__init__(TicTacToeBoard(), players)
+        self.legal_tokens = TIC_TAC_TOE_TOKENS
 
     def set_up_game(self):
         pass

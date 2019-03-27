@@ -63,12 +63,14 @@ class ClientGame(Game, ABC):
 
     def wait_for_game_to_start(self):
         is_client_waiting = True
+        client_player = self.players[0]
 
         while is_client_waiting:
             ClientGame.LOGGER.info(f"Client connected, waiting for game server to start...")
-            server_response = self.server_socket.recv(1024).decode()
+            server_response = self.server_socket.recv(4).decode()
 
             if server_response.startswith(READY_MSG):
+                client_player.game_token = self.str_to_game_token(server_response[3])
                 is_client_waiting = False
             else:
                 time.sleep(1)

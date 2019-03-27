@@ -1,5 +1,5 @@
 from L8.board.board import Board
-from L8.game.tic_tac_toe.tic_tac_toe_game import TicTacToeGameUtil
+from L8.game.game_token import TIC_TAC_TOE_TOKENS
 
 
 class TicTacToeBoard(Board):
@@ -7,6 +7,14 @@ class TicTacToeBoard(Board):
     def __init__(self):
         super().__init__()
         self.init_board()
+
+        for t in TIC_TAC_TOE_TOKENS:
+            if str(t) == "X":
+                self.x = t
+            elif str(t) == "O":
+                self.o = t
+
+        assert self.x is not None and self.o is not None
 
     def init_board(self):
         # Initialize a 3x3 board with no tokens
@@ -31,15 +39,14 @@ class TicTacToeBoard(Board):
         return ",".join([",".join([str(c) if c is not None else "" for c in row]) for row in self.current_state])
 
     def deserialize(self, serialized_board: str) -> object:
-        x = TicTacToeGameUtil.get_token_from_str("X")
-        o = TicTacToeGameUtil.get_token_from_str("O")
         state = []
 
         i = 0
         serialized_tokens = [s.upper() for s in serialized_board.split(",")]
 
         while i < 9:
-            row = [None if not e else x if e.upper() == str(x) else o for e in serialized_tokens[i: i + 3]]
+            row = [None if not e else
+                   self.x if e.upper() == str(self.x) else self.o for e in serialized_tokens[i: i + 3]]
             state.append(row)
             i += 3
 

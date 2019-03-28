@@ -4,7 +4,7 @@ from L8.constants.constants import GameMode, TypeOfUI, GameName, GameLevel
 from L8.game.game_factory import GameFactory
 from L8.messages.english import SHUTTING_DOWN
 
-VERSION = "v0.1"
+VERSION = "v1.0"
 
 
 def main():
@@ -44,9 +44,9 @@ def parse_args():
                         help="Choose the game you want to play.")
 
     parser.add_argument('--level', '-l',
-                        default='easy',
+                        default='hard',
                         choices=['easy', 'normal', 'hard'],
-                        help="Choose the game you want to play.")
+                        help="Choose the level of the AI.")
 
     parser.add_argument('--port',
                         metavar='PORT',

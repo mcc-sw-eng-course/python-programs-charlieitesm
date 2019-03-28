@@ -39,7 +39,7 @@ class ServerGame(Game, ABC):
             tries += 1
 
             try:
-                self.server_socket.bind(("127.0.0.1", self.port))
+                self.server_socket.bind(("", self.port))
                 ServerGame.LOGGER.info(f"Reserved port {self.port} successfully!")
 
                 self.server_socket.listen(1)

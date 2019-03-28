@@ -125,7 +125,7 @@ class ClientGame(Game, ABC):
 
     # noinspection PyBroadException
     def release_resources(self):
-        ClientGame.LOGGER.info(f"Releasing server resources for port... {self.port}")
+        ClientGame.LOGGER.info(f"Releasing client resources for port... {self.port}")
 
         for mr in self.managed_resources:
             if mr:

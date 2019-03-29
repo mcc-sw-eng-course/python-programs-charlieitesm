@@ -1,80 +1,5 @@
-from abc import ABC
-
 from L8.board.board import Board
-from L8.board.tic_tac_toe_board import TicTacToeBoard
-from L8.constants.constants import MOVE
-from L8.game.game import Game
-from L8.game.game_token import GameToken
-from L8.game.local_game import LocalGame
-from L8.messages.english import TICTACTOE_ENDING_MESSAGE, TICTACTOE_DRAW_MESSAGE, WINNER_MESSAGE
-from L8.player.player import Player
-
-
-class TicTacToeGame(Game, ABC):
-
-    LEGAL_TOKENS = [GameToken("X"), GameToken("O")]
-
-    def __init__(self, players: list):
-        super().__init__(TicTacToeBoard(), players)
-
-    def set_up_game(self):
-        pass
-
-    def is_valid_move(self, move: dict, player: Player) -> bool:
-        """
-        Determines if the move made by player is legal on this board
-
-        In general, a Tic Tac Toe is valid if:
-        1. It is made within the bounds of the board
-        2. The space that is intended to be used is not already in use
-
-        :param move: a dict with the move and the game_token to be placed by player
-        :param player: a Player making the move. For TicTacToe, the player is not relevant
-        :return: True if the move is valid, False otherwise.
-        """
-
-        move_x, move_y = move[MOVE]
-
-        return TicTacToeGameUtil.is_legal_tic_tac_toe_move(self.board, move_x, move_y)
-
-    def is_game_over(self) -> bool:
-        """
-        Determines if the game is already over
-
-        In general, a TicTacToe game is over if:
-        1. There is a line of the same game_token horizontally, vertically or diagonally
-        2. There are no more spaces to use
-        :return:
-        """
-        # Check if we have a winner
-        winning_token = TicTacToeGameUtil.get_winner(self.board)
-
-        if winning_token:
-            self.winner = self.token_to_player(winning_token)
-            return True
-
-        # Check if there are no more places to put a game_token
-        for row in self.board.current_state:
-            for val in row:
-                if val is None:
-                    return False
-        return True
-
-    def finish_game(self):
-        """
-        Prepares and outputs to each of the players a message with the results
-        :return:
-        """
-        winner_result = TICTACTOE_DRAW_MESSAGE if not self.winner else f"{WINNER_MESSAGE} {self.winner}"
-        final_message = "\n".join([TICTACTOE_ENDING_MESSAGE, str(self.board), winner_result])
-
-        for p in self.players:
-            p.ui.output(final_message)
-
-
-class TicTacToeLocalGame(TicTacToeGame, LocalGame):
-    def __init__(self, players: list):
-        super().__init__(players)
+from L8.game.game_token import GameToken, TIC_TAC_TOE_TOKENS
 
 
 class TicTacToeGameUtil:
@@ -184,3 +109,8 @@ class TicTacToeGameUtil:
         else:
             return False
 
+    @staticmethod
+    def get_token_from_str(token_str: str) -> GameToken:
+        for gt in TIC_TAC_TOE_TOKENS:
+            if str(gt).lower() == token_str.lower():
+                return gt

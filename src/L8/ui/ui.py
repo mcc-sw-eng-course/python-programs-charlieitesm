@@ -1,7 +1,9 @@
+import socket
+import time
 from abc import abstractmethod, ABC
 
 
-class UI(ABC): # pragma: no cover
+class UI(ABC):  # pragma: no cover
 
     def __init__(self):
         self.initialize_ui()
@@ -19,7 +21,7 @@ class UI(ABC): # pragma: no cover
         raise NotImplementedError
 
 
-class ConsoleUI(UI): # pragma: no cover
+class ConsoleUI(UI):  # pragma: no cover
 
     def __init__(self):
         super().__init__()
@@ -34,7 +36,7 @@ class ConsoleUI(UI): # pragma: no cover
         print(message)
 
 
-class DummyUI(UI): # pragma: no cover
+class DummyUI(UI):  # pragma: no cover
     """
     A dummy UI that doesn't do anything and is mostly used by AIPlayers
     """
@@ -46,3 +48,28 @@ class DummyUI(UI): # pragma: no cover
 
     def output(self, message: str):
         pass
+
+
+class RemoteUI(UI):  # pragma: no cover
+    """
+    A UI to be used by a server to communicate with remote network players
+
+    """
+    def __init__(self, connection: socket):
+        self.connection = connection
+        super().__init__()
+
+    def initialize_ui(self):
+        print("Initializing Remote UI")
+
+        if not self.connection:
+            raise ConnectionError("Connection for RemoteUI didn't start properly!")
+
+    def input(self, message: str) -> str:
+        self.output(f"{message}")
+        recv_input = self.connection.recv(1024).decode()
+        return recv_input
+
+    def output(self, message: str):
+        self.connection.send(message.encode())
+        time.sleep(1)

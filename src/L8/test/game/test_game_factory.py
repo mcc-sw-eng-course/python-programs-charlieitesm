@@ -1,12 +1,11 @@
-from unittest import TestCase
-
 from argparse import Namespace
+from unittest import TestCase
 
 from L8.constants.constants import GameMode, TypeOfUI, GameName, GameLevel
 from L8.game.game import Game
 from L8.game.game_factory import GameFactory
 from L8.game.local_game import LocalGame
-from L8.game.tic_tac_toe_game import TicTacToeGame, TicTacToeLocalGame
+from L8.game.tic_tac_toe.tic_tac_toe_game import TicTacToeGame, TicTacToeLocalGame
 from L8.player.ai_player import AIPlayer
 from L8.player.human_player import HumanPlayer
 from L8.ui.ui import ConsoleUI

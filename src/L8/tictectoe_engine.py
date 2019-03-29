@@ -4,7 +4,7 @@ from L8.constants.constants import GameMode, TypeOfUI, GameName, GameLevel
 from L8.game.game_factory import GameFactory
 from L8.messages.english import SHUTTING_DOWN
 
-VERSION = "v0.1"
+VERSION = "v1.0"
 
 
 def main():
@@ -44,9 +44,23 @@ def parse_args():
                         help="Choose the game you want to play.")
 
     parser.add_argument('--level', '-l',
-                        default='easy',
+                        default='hard',
                         choices=['easy', 'normal', 'hard'],
-                        help="Choose the game you want to play.")
+                        help="Choose the level of the AI.")
+
+    parser.add_argument('--port',
+                        metavar='PORT',
+                        type=int,
+                        default=8081,
+                        help="The port on which you want the server to listen for connections "
+                             "or the clients to connect to.")
+
+    parser.add_argument('--ip',
+                        metavar='IP',
+                        dest="ip_address",
+                        type=str,
+                        help="The IP address the client will connect to. "
+                             "This argument is ignored if game-mode is not client")
 
     args = parser.parse_args()
 
@@ -54,7 +68,11 @@ def parse_args():
         args.game_mode = GameMode.LOCAL
     elif args.game_mode == "client":
         args.game_mode = GameMode.CLIENT
-    else:
+
+        if not args.ip_address:
+            parser.error("A client mode was specified but a server ip address was not provided!")
+
+    elif args.game_mode == "server":
         args.game_mode = GameMode.SERVER
 
     if args.ui == "console":

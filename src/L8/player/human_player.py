@@ -1,7 +1,7 @@
 from L8.board.board import Board
 from L8.constants.constants import GAME_TOKEN, MOVE
 from L8.game.game_token import GameToken
-from L8.messages.english import ENTER_YOUR_MOVE, INVALID_FORMAT_FOR_MOVE
+from L8.messages.english import ENTER_YOUR_MOVE_MSG, INVALID_FORMAT_FOR_MOVE_MSG
 from L8.player.player import Player
 from L8.ui.ui import UI
 
@@ -19,11 +19,11 @@ class HumanPlayer(Player):
         return self_name
 
     def make_move(self, board: Board) -> dict:
-        move = self.ui.input(ENTER_YOUR_MOVE).split(",")
+        move = self.ui.input(ENTER_YOUR_MOVE_MSG).split(",")
 
         while not move or len(move) != 2 or not all([m.isdigit() for m in move]):
-            self.ui.output(INVALID_FORMAT_FOR_MOVE)
-            move = self.ui.input(ENTER_YOUR_MOVE).split(",")
+            self.ui.output(INVALID_FORMAT_FOR_MOVE_MSG)
+            move = self.ui.input(ENTER_YOUR_MOVE_MSG).split(",")
 
         move = (int(move[0]), int(move[1]))
 

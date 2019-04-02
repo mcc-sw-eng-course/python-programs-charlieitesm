@@ -24,7 +24,7 @@ class ClientGame(Game, ABC):
 
     LOGGER = logging.getLogger(__name__)
 
-    def initialize_resources(self):
+    def initialize_resources(self): # pragma: no cover
         ClientGame.LOGGER.info(f"Initializing client to connect to {self.ip_address}:{self.port}...")
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.managed_resources.append(self.server_socket)

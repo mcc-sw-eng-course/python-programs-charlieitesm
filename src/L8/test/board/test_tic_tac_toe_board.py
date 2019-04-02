@@ -28,3 +28,17 @@ class TestTicTacToeBoard(TestCase):
         expected_str_board = " X | O |   \n X | X |   \n   |   | O "
         str_board = str(self.under_test)
         self.assertEqual(expected_str_board, str_board, "The board was not printed as expected")
+
+    def test_deserialization(self):
+        tic_tac_board = TicTacToeBoard()
+        tic_tac_board.current_state = [
+            ["X", "O", None],
+            ["X", "X", None],
+            [None, None, "O"]
+        ]
+        string_serialization = tic_tac_board.serialize()
+
+        self.under_test.deserialize(string_serialization)
+        str_rep_1 = str(tic_tac_board)
+        str_rep_2 = str(self.under_test)
+        self.assertEqual(str_rep_1, str_rep_2)

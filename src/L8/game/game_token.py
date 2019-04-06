@@ -9,3 +9,4 @@ class GameToken:
 
 
 TIC_TAC_TOE_TOKENS = [GameToken("X"), GameToken("O")]
+CHECKERS_TOKENS = [GameToken("B"), GameToken("W"), GameToken("KB"), GameToken("KW")]

@@ -13,7 +13,7 @@ class Player(ABC):
         self.game_token = game_token
 
     @abstractmethod
-    def make_move(self, board: Board) -> dict:  # pragma: no cover
+    def make_move(self, board: Board, should_ask_for_origin: bool = False) -> dict:  # pragma: no cover
         raise NotImplementedError
 
     @abstractmethod

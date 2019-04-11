@@ -12,7 +12,8 @@ class TypeOfUI(Enum):
 
 
 class GameName(Enum):
-    TIC_TAC_TOE = "tic_tac_toe"
+    TIC_TAC_TOE = "tic_tac_toe",
+    CHECKERS = "checkers"
 
 
 class GameLevel(Enum):

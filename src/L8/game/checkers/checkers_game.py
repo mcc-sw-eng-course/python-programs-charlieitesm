@@ -59,7 +59,7 @@ class CheckersServerGame(CheckersGame, ServerGame):
         raise NotImplementedError
 
 
-class CheckerslientGame(CheckersGame, ClientGame):
+class CheckersClientGame(CheckersGame, ClientGame):
     def __init__(self, players: list, ip_address: str, port: int):
         super().__init__(players)
         self.ip_address = ip_address

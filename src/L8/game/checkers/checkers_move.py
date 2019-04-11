@@ -5,3 +5,6 @@ class CheckersMove:
         self.fc = from_col
         self.tc = to_col
         self.tr = to_row
+
+    def __eq__(self, other):
+        return (self.fc == other.fc) and (self.fr == other.fr) and (self.tc == other.tc) and (self.tr == other.tr)

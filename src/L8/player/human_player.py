@@ -20,10 +20,11 @@ class HumanPlayer(Player):
     def make_move(self, board: Board, should_ask_for_origin: bool = False) -> dict:
         if should_ask_for_origin:
             move = self.ui.input(ENTER_PIECE_POSITION).split(",")
-            move.append(self.ui.input(ENTER_YOUR_MOVE_MSG).split(","))
+            move.extend(self.ui.input(ENTER_YOUR_MOVE_MSG).split(","))
             while not move or len(move) != 4 or not all([m.isdigit() for m in move]):
+                self.ui.output(INVALID_FORMAT_FOR_MOVE_MSG)
                 move = self.ui.input(ENTER_PIECE_POSITION).split(",")
-                move.append(self.ui.input(ENTER_YOUR_MOVE_MSG).split(","))
+                move.extend(self.ui.input(ENTER_YOUR_MOVE_MSG).split(","))
             move = (int(move[0]), int(move[1]), int(move[2]), int(move[3]))
         else:
             move = self.ui.input(ENTER_YOUR_MOVE_MSG).split(",")

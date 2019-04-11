@@ -40,7 +40,7 @@ def parse_args():
 
     parser.add_argument('--game', '-g',
                         default='tictactoe',
-                        choices=['tictactoe'],
+                        choices=['tictactoe', 'checkers'],
                         help="Choose the game you want to play.")
 
     parser.add_argument('--level', '-l',
@@ -80,6 +80,8 @@ def parse_args():
 
     if args.game == "tictactoe":
         args.game = GameName.TIC_TAC_TOE
+    elif args.game == "checkers":
+        args.game = GameName.CHECKERS
 
     if args.level == "easy":
         args.level = GameLevel.EASY
@@ -87,6 +89,10 @@ def parse_args():
         args.level = GameLevel.HARD
     elif args.level == "normal":
         args.level = GameLevel.NORMAL
+
+    # While we implement the rest of the AI levels, let's force an Easy level
+    if args.game is GameName.CHECKERS:
+        args.level = GameLevel.EASY
 
     return args
 

@@ -9,11 +9,12 @@ from L8.player.player import Player
 
 class Game(ABC):
 
-    def __init__(self, board: Board, players: list):
+    def __init__(self, board: Board, players: list, should_ask_for_origin_move: bool = False):
         self.board = board
         self.players = players
         self.winner = None
         self.legal_tokens = None
+        self.should_ask_for_origin_move = should_ask_for_origin_move
 
         # These fields will be used by network games only
         self.ip_address = None
@@ -46,12 +47,12 @@ class Game(ABC):
 
                     player.ui.output(f"***** {player}'s turn! ******")
                     player.ui.output(self.board)
-                    move = player.make_move(self.board)
+                    move = player.make_move(self.board, self.should_ask_for_origin_move)
 
                     # Check that the move is legal in the context of the board
                     while not self.is_valid_move(move, player):
                         player.ui.output(ILLEGAL_MOVE_MSG)
-                        move = player.make_move(self.board)
+                        move = player.make_move(self.board, self.should_ask_for_origin_move)
 
                     # Apply the player's move to the board since we now know it was legal
                     move_x, move_y = move[MOVE]

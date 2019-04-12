@@ -19,7 +19,7 @@ class RemotePlayer(HumanPlayer):
         RemotePlayer.PLAYER_NUM += 1
         return self_name
 
-    def make_move(self, board: Board) -> dict:
+    def make_move(self, board: Board, should_ask_for_origin: bool = False) -> dict:
         move = self.ui.input(f"{ASK_MOVE}{board.serialize()}").split(",")
 
         while not move or len(move) != 2 or not all([m.isdigit() for m in move]):

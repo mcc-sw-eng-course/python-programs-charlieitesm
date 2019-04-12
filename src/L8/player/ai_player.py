@@ -21,7 +21,7 @@ class AIPlayer(Player):
         AIPlayer.PLAYER_NUM += 1
         return self_name
 
-    def make_move(self, board: Board) -> dict:
+    def make_move(self, board: Board, should_ask_for_origin: bool = False) -> dict:
         move = self.brain.calculate_next_move(board, self.game_token)
 
         return {

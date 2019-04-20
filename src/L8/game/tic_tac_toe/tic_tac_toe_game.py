@@ -21,9 +21,10 @@ class TicTacToeGame(Game, ABC):
     def set_up_game(self):
         pass
 
-    def make_move(self, move: dict, player: Player):
+    def make_move(self, move: dict, player: Player) -> bool:
         move_x, move_y = move[MOVE]
         self.board.current_state[move_x][move_y] = move[player.game_token]
+        return False
 
     def is_valid_move(self, move: dict, player: Player) -> bool:
         """

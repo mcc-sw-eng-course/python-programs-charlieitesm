@@ -19,7 +19,7 @@ class CheckersGame(Game, ABC):
     def set_up_game(self):
         pass
 
-    def make_move(self, move: dict, player: Player):
+    def make_move(self, move: dict, player: Player) -> bool:
         origin_x, origin_y, move_x, move_y = move[MOVE]
         legal_moves = CheckerGameUtil.get_valid_moves_for_player(self.board, player.game_token)
         checkers_move = CheckersMove(origin_x, origin_y, move_x, move_y)
@@ -29,6 +29,8 @@ class CheckersGame(Game, ABC):
         self.board.current_state[checkers_move.tr][checkers_move.tc] = move[GAME_TOKEN]
         if checkers_move.is_jump:
             self.board.current_state[checkers_move.jumped_enemy_row][checkers_move.jumped_enemy_col] = None
+        return len(CheckerGameUtil.get_jumps_from_position(player.game_token, move_x, move_y, self.board)) > 0
+
 
     def is_valid_move(self, move: dict, player: Player) -> bool:
         r1, c1, r2, c2 = move[MOVE]

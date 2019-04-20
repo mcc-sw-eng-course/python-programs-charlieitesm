@@ -121,6 +121,7 @@ class TestCheckerGameUtil(TestCase):
         move = CheckersMove(2, 2, 0, 0)
         self.assertTrue(len(CheckerGameUtil.get_valid_moves_for_player(board, self.w)) is 4)
         self.assertTrue(CheckerGameUtil.is_valid_move(move, self.w, board))
+        self.assertTrue(len(CheckerGameUtil.get_jumps_from_position(self.w, 2, 2, board)))
 
         test_board = [
             [None, None, None, None, None, None, None, None],

@@ -86,6 +86,42 @@ class CheckerGameUtil:
         return legal_moves
 
     @staticmethod
+    def get_jumps_from_position(player_color, r, c, board: CheckersBoard) -> list:
+        current_state = board.current_state
+        legal_jumps = []
+        if player_color is CHECKERS_TOKENS[1]:
+            player_king = board.kw
+        else:
+            player_king = board.kb
+        if current_state[r][c] is player_color or current_state[r][c] is player_king:
+            if CheckerGameUtil.can_jump(player_color, r, c, r + 1, c + 1, r + 2, c + 2, board):
+                move = CheckersMove(r, c, r + 2, c + 2)
+                move.is_jump = True
+                move.jumped_enemy_col = c + 1
+                move.jumped_enemy_row = r + 1
+                legal_jumps.append(move)
+            if CheckerGameUtil.can_jump(player_color, r, c, r - 1, c - 1, r - 2, c - 2, board):
+                move = CheckersMove(r, c, r - 2, c - 2)
+                move.is_jump = True
+                move.jumped_enemy_row = r - 1
+                move.jumped_enemy_col = c - 1
+                legal_jumps.append(move)
+            if CheckerGameUtil.can_jump(player_color, r, c, r + 1, c - 1, r + 2, c - 2, board):
+                move = CheckersMove(r, c, r + 2, c - 2)
+                move.is_jump = True
+                move.jumped_enemy_row = r + 1
+                move.jumped_enemy_col = c - 1
+                legal_jumps.append(move)
+
+            if CheckerGameUtil.can_jump(player_color, r, c, r - 1, c - 1, r - 2, c - 2, board):
+                move = CheckersMove(r, c, r - 2, c - 2)
+                move.is_jump = True
+                move.jumped_enemy_col = c - 1
+                move.jumped_enemy_row = r - 1
+                legal_jumps.append(move)
+        return legal_jumps
+
+    @staticmethod
     def can_jump(player_color: str, r1, c1, r2, c2, r3, c3, board: CheckersBoard) -> bool:
         """
         Determines if a piece can make a jump, from row1(r1) and column1(c1) to

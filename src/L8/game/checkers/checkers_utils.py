@@ -33,7 +33,7 @@ class CheckerGameUtil:
         :return: a list of legal moves
         """
         legal_moves = []
-        if player_color is CHECKERS_TOKENS[1].token_symbol:
+        if player_color is CHECKERS_TOKENS[1]:
             player_king = board.kw
         else:
             player_king = board.kb
@@ -44,13 +44,30 @@ class CheckerGameUtil:
             for c, col in enumerate(row):
                 if current_state[r][c] is player_color or current_state[r][c] is player_king:
                     if CheckerGameUtil.can_jump(player_color, r, c, r + 1, c + 1, r + 2, c + 2, board):
-                        legal_moves.append(CheckersMove(r, c, r + 2, c + 2))
+                        move = CheckersMove(r, c, r + 2, c + 2)
+                        move.is_jump = True
+                        move.jumped_enemy_col = c + 1
+                        move.jumped_enemy_row = r + 1
+                        legal_moves.append(move)
                     if CheckerGameUtil.can_jump(player_color, r, c, r - 1, c - 1, r - 2, c - 2, board):
-                        legal_moves.append(CheckersMove(r, c, r - 2, c - 2))
+                        move = CheckersMove(r, c, r - 2, c - 2)
+                        move.is_jump = True
+                        move.jumped_enemy_row = r - 1
+                        move.jumped_enemy_col = c - 1
+                        legal_moves.append(move)
                     if CheckerGameUtil.can_jump(player_color, r, c, r + 1, c - 1, r + 2, c - 2, board):
-                        legal_moves.append(CheckersMove(r, c, r + 2, c - 2))
+                        move = CheckersMove(r, c, r + 2, c - 2)
+                        move.is_jump = True
+                        move.jumped_enemy_row = r + 1
+                        move.jumped_enemy_col = c - 1
+                        legal_moves.append(move)
+
                     if CheckerGameUtil.can_jump(player_color, r, c, r - 1, c - 1, r - 2, c - 2, board):
-                        legal_moves.append(CheckersMove(r, c, r - 2, c - 2))
+                        move = CheckersMove(r, c, r - 2, c - 2)
+                        move.is_jump = True
+                        move.jumped_enemy_col = c - 1
+                        move.jumped_enemy_row = r - 1
+                        legal_moves.append(move)
 
         # if legal_moves has any item, that means the player is forced to jump, so not other kind of move is legal.
         # we check moves without jumps.
@@ -93,7 +110,7 @@ class CheckerGameUtil:
         if current_state[r3][c3] is not None:
             return False
 
-        if player_color == CHECKERS_TOKENS[1].token_symbol:
+        if player_color == CHECKERS_TOKENS[1]:
             if current_state[r1][c1] is board.w and r3 < r1:
                 return False  # white pieces can only move down
             if current_state[r2][c2] is not board.b and current_state[r2][c2] is not board.kb:
@@ -114,7 +131,7 @@ class CheckerGameUtil:
 
         if board[r2][c2] is not None:
             return False  # there is already a piece in the destination
-        if player_color is CHECKERS_TOKENS[0].token_symbol:
+        if player_color is CHECKERS_TOKENS[0]:
             if board[r1][c1] is cb.w and r2 > r1:
                 return False  # regular white piece can only move down
             return True

@@ -40,9 +40,10 @@ class TestCheckerGameUtil(TestCase):
         self.assertEqual(test_board[r2][c2], self.b)
         self.assertIsNone(test_board[destination_row][destination_column])
 
-        self.assertTrue(CheckerGameUtil.can_jump(self.w.token_symbol, r1, c1, r2, c2, destination_row, destination_column, board))
-        self.assertTrue(CheckerGameUtil.can_jump(self.b.token_symbol, r2, c2, r1, c1, r2 - 2, c2 - 2, board))
-        self.assertFalse(CheckerGameUtil.can_jump(self.w.token_symbol, r1,c1, r1-1, c1-1, r1-2, c2-2, board))
+        self.assertTrue(
+            CheckerGameUtil.can_jump(self.w, r1, c1, r2, c2, destination_row, destination_column, board))
+        self.assertTrue(CheckerGameUtil.can_jump(self.b, r2, c2, r1, c1, r2 - 2, c2 - 2, board))
+        self.assertFalse(CheckerGameUtil.can_jump(self.w, r1, c1, r1 - 1, c1 - 1, r1 - 2, c2 - 2, board))
 
     def test_get_valid_moves_for_player(self):
         test_board = [
@@ -78,7 +79,7 @@ class TestCheckerGameUtil(TestCase):
 
     def test_is_game_over(self):
         test_board = [
-            [None, None, None, None, None,None, None, None],
+            [None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None],
@@ -117,15 +118,15 @@ class TestCheckerGameUtil(TestCase):
         ]
         board = CheckersBoard()
         board.current_state = test_board
-        move = CheckersMove(2,2,0,0)
-        self.assertTrue(len(CheckerGameUtil.get_valid_moves_for_player(board,"W")) is 4)
-        self.assertTrue(CheckerGameUtil.is_valid_move(move,"W", board))
+        move = CheckersMove(2, 2, 0, 0)
+        self.assertTrue(len(CheckerGameUtil.get_valid_moves_for_player(board, self.w)) is 4)
+        self.assertTrue(CheckerGameUtil.is_valid_move(move, self.w, board))
 
         test_board = [
             [None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None],
             [None, None, self.kw, None, None, None, None, None],
-            [None, None,  None,None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None],
             [None, None, None, None, self.kw, None, None, None],
             [None, None, None, None, None, None, None, None],
@@ -133,5 +134,5 @@ class TestCheckerGameUtil(TestCase):
         ]
         board = CheckersBoard()
         board.current_state = test_board
-        self.assertTrue(len(CheckerGameUtil.get_valid_moves_for_player(board, "W")) is 8)
-        self.assertFalse(CheckerGameUtil.is_valid_move(move, "W", board))
+        self.assertTrue(len(CheckerGameUtil.get_valid_moves_for_player(board, self.w)) is 8)
+        self.assertFalse(CheckerGameUtil.is_valid_move(move, self.w, board))

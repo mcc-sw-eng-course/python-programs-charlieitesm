@@ -1,7 +1,7 @@
 from abc import ABC
 
 from L8.board.checkers_board import CheckersBoard
-from L8.constants.constants import MOVE
+from L8.constants.constants import MOVE, GAME_TOKEN
 from L8.game.checkers.checkers_move import CheckersMove
 from L8.game.checkers.checkers_utils import CheckerGameUtil
 from L8.game.client_game import ClientGame
@@ -18,6 +18,17 @@ class CheckersGame(Game, ABC):
 
     def set_up_game(self):
         pass
+
+    def make_move(self, move: dict, player: Player):
+        origin_x, origin_y, move_x, move_y = move[MOVE]
+        legal_moves = CheckerGameUtil.get_valid_moves_for_player(self.board, player.game_token)
+        checkers_move = CheckersMove(origin_x, origin_y, move_x, move_y)
+        i = legal_moves.index(checkers_move)
+        checkers_move = legal_moves[i]
+        self.board.current_state[checkers_move.fr][checkers_move.fc] = None
+        self.board.current_state[checkers_move.tr][checkers_move.tc] = move[GAME_TOKEN]
+        if checkers_move.is_jump:
+            self.board.current_state[checkers_move.jumped_enemy_row][checkers_move.jumped_enemy_col] = None
 
     def is_valid_move(self, move: dict, player: Player) -> bool:
         r1, c1, r2, c2 = move[MOVE]

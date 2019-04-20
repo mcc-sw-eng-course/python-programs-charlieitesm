@@ -55,13 +55,7 @@ class Game(ABC):
                         move = player.make_move(self.board, self.should_ask_for_origin_move)
 
                     # Apply the player's move to the board since we now know it was legal
-                    if (self.should_ask_for_origin_move):
-                        origin_x, origin_y, move_x,move_y = move[MOVE]
-                        self.board.current_state[origin_x][origin_y] = None
-                    else:
-                        move_x, move_y = move[MOVE]
-                    self.board.current_state[move_x][move_y] = move[GAME_TOKEN]
-
+                    self.make_move(move, player)
                     is_game_over_yet = self.is_game_over()
 
                     # If the game has ended, break the player loop which in turn will break the game loop
@@ -75,6 +69,10 @@ class Game(ABC):
 
     @abstractmethod
     def is_valid_move(self, move: dict, player: Player) -> bool:  # pragma: no cover
+        raise NotImplementedError
+
+    @abstractmethod
+    def make_move(self, move: dict, player: Player):
         raise NotImplementedError
 
     @abstractmethod

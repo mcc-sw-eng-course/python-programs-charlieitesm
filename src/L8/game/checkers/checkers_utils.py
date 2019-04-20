@@ -33,7 +33,7 @@ class CheckerGameUtil:
         :return: a list of legal moves
         """
         legal_moves = []
-        if player_color is CHECKERS_TOKENS[1]:
+        if player_color is CHECKERS_TOKENS[1].token_symbol:
             player_king = board.kw
         else:
             player_king = board.kb
@@ -93,17 +93,17 @@ class CheckerGameUtil:
         if current_state[r3][c3] is not None:
             return False
 
-        if player_color == CHECKERS_TOKENS[1]:
-            if current_state[r1][c1] is board.w and r3 > r1:
-                return False  # black pieces can only move up
+        if player_color == CHECKERS_TOKENS[1].token_symbol:
+            if current_state[r1][c1] is board.w and r3 < r1:
+                return False  # white pieces can only move down
             if current_state[r2][c2] is not board.b and current_state[r2][c2] is not board.kb:
-                return False  # there is not a white piece to jump
+                return False  # there is not a black piece to jump
             return True
         else:
-            if current_state[r1][c1] is board.b and r3 < r1:
-                return False  # white pieces can only move down
+            if current_state[r1][c1] is board.b and r3 > r1:
+                return False  # black pieces can only move up
             if current_state[r2][c2] is not board.w and current_state[r2][c2] is not board.kw:
-                return False  # there is not a black piece to jump
+                return False  # there is not a white piece to jump
             return True
 
     @staticmethod
@@ -114,7 +114,7 @@ class CheckerGameUtil:
 
         if board[r2][c2] is not None:
             return False  # there is already a piece in the destination
-        if player_color is CHECKERS_TOKENS[0]:
+        if player_color is CHECKERS_TOKENS[0].token_symbol:
             if board[r1][c1] is cb.w and r2 > r1:
                 return False  # regular white piece can only move down
             return True

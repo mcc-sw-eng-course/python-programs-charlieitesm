@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from L8.board.checkers_board import CheckersBoard
+from L8.game.checkers.checkers_move import CheckersMove
 from L8.game.checkers.checkers_utils import CheckerGameUtil
 from L8.game.game_token import CHECKERS_TOKENS
 
@@ -39,8 +40,10 @@ class TestCheckerGameUtil(TestCase):
         self.assertEqual(test_board[r2][c2], self.b)
         self.assertIsNone(test_board[destination_row][destination_column])
 
-        self.assertTrue(CheckerGameUtil.can_jump(self.w, r1, c1, r2, c2, destination_row, destination_column, board))
+        self.assertTrue(
+            CheckerGameUtil.can_jump(self.w, r1, c1, r2, c2, destination_row, destination_column, board))
         self.assertTrue(CheckerGameUtil.can_jump(self.b, r2, c2, r1, c1, r2 - 2, c2 - 2, board))
+        self.assertFalse(CheckerGameUtil.can_jump(self.w, r1, c1, r1 - 1, c1 - 1, r1 - 2, c2 - 2, board))
 
     def test_get_valid_moves_for_player(self):
         test_board = [
@@ -73,3 +76,64 @@ class TestCheckerGameUtil(TestCase):
         self.assertEqual(origin_column, jump_move.fc)
         self.assertEqual(destination_row, jump_move.tr)
         self.assertEqual(destination_column, jump_move.tc)
+
+    def test_is_game_over(self):
+        test_board = [
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, self.b, None],
+            [self.b, None, self.b, None, self.b, None, None, None],
+            [None, self.b, None, self.b, None, self.b, None, self.b],
+            [self.b, None, self.b, None, self.b, None, self.b, None]
+        ]
+        board = CheckersBoard()
+        board.current_state = test_board
+        self.assertTrue(CheckerGameUtil.check_if_game_is_over(board))
+        test_board = [
+            [None, None, self.w, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, self.b, None],
+            [self.b, None, self.b, None, self.b, None, None, None],
+            [None, self.b, None, self.b, None, self.b, None, self.b],
+            [self.b, None, self.b, None, self.b, None, self.b, None]
+        ]
+        board = CheckersBoard()
+        board.current_state = test_board
+        self.assertFalse(CheckerGameUtil.check_if_game_is_over(board))
+
+    def test_get_valid_moves_for_player(self):
+        test_board = [
+            [None, None, None, None, None, None, None, None],
+            [None, self.b, None, self.b, None, None, None, None],
+            [None, None, self.kw, None, None, None, None, None],
+            [None, self.b, None, self.b, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None]
+        ]
+        board = CheckersBoard()
+        board.current_state = test_board
+        move = CheckersMove(2, 2, 0, 0)
+        self.assertTrue(len(CheckerGameUtil.get_valid_moves_for_player(board, self.w)) is 4)
+        self.assertTrue(CheckerGameUtil.is_valid_move(move, self.w, board))
+        self.assertTrue(len(CheckerGameUtil.get_jumps_from_position(self.w, 2, 2, board)))
+
+        test_board = [
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, self.kw, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, self.kw, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None]
+        ]
+        board = CheckersBoard()
+        board.current_state = test_board
+        self.assertTrue(len(CheckerGameUtil.get_valid_moves_for_player(board, self.w)) is 8)
+        self.assertFalse(CheckerGameUtil.is_valid_move(move, self.w, board))

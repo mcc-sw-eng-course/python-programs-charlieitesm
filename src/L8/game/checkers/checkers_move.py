@@ -1,4 +1,7 @@
 class CheckersMove:
+    is_jump = False
+    jumped_enemy_row = -1
+    jumped_enemy_col = -1
 
     def __init__(self, from_row: int, from_col: int, to_row: int, to_col: int) -> None:
         self.fr = from_row

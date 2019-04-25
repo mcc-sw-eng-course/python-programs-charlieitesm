@@ -44,29 +44,25 @@ class Game(ABC):
 
                 # Ask each of the players for their move
                 for player in self.players:
-
-                    player.ui.output(f"***** {player}'s turn! ******")
-                    player.ui.output(self.board)
-                    move = player.make_move(self.board, self.should_ask_for_origin_move)
-
-                    # Check that the move is legal in the context of the board
-                    while not self.is_valid_move(move, player):
-                        player.ui.output(ILLEGAL_MOVE_MSG)
+                    repeat = True
+                    while repeat :
+                        repeat = False
+                        player.ui.output(f"***** {player}'s turn! ******")
+                        player.ui.output(self.board)
                         move = player.make_move(self.board, self.should_ask_for_origin_move)
 
-                    # Apply the player's move to the board since we now know it was legal
-                    if (self.should_ask_for_origin_move):
-                        origin_x, origin_y, move_x,move_y = move[MOVE]
-                        self.board.current_state[origin_x][origin_y] = None
-                    else:
-                        move_x, move_y = move[MOVE]
-                    self.board.current_state[move_x][move_y] = move[GAME_TOKEN]
+                        # Check that the move is legal in the context of the board
+                        while not self.is_valid_move(move, player):
+                            player.ui.output(ILLEGAL_MOVE_MSG)
+                            move = player.make_move(self.board, self.should_ask_for_origin_move)
 
-                    is_game_over_yet = self.is_game_over()
+                        # Apply the player's move to the board since we now know it was legal
+                        repeat = self.make_move(move, player)
+                        is_game_over_yet = self.is_game_over()
 
-                    # If the game has ended, break the player loop which in turn will break the game loop
-                    if is_game_over_yet:
-                        break
+                        # If the game has ended, break the player loop which in turn will break the game loop
+                        if is_game_over_yet:
+                            break
 
             # Leave every concrete game to decide what it needs to do after a game is completed
             self.finish_game()
@@ -75,6 +71,10 @@ class Game(ABC):
 
     @abstractmethod
     def is_valid_move(self, move: dict, player: Player) -> bool:  # pragma: no cover
+        raise NotImplementedError
+
+    @abstractmethod
+    def make_move(self, move: dict, player: Player) -> bool:
         raise NotImplementedError
 
     @abstractmethod

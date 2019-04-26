@@ -1,7 +1,6 @@
 from abc import abstractmethod, ABC
 
 from L8.board.board import Board
-from L8.constants.constants import MOVE, GAME_TOKEN
 from L8.game.game_token import GameToken
 from L8.messages.english import ILLEGAL_MOVE_MSG
 from L8.player.player import Player
@@ -44,9 +43,11 @@ class Game(ABC):
 
                 # Ask each of the players for their move
                 for player in self.players:
-                    repeat = True
-                    while repeat :
-                        repeat = False
+
+                    # This will allow us to support games where a player can make more than 1 move each turn
+                    should_ask_for_move = True
+
+                    while should_ask_for_move:
                         player.ui.output(f"***** {player}'s turn! ******")
                         player.ui.output(self.board)
                         move = player.make_move(self.board, self.should_ask_for_origin_move)
@@ -57,12 +58,16 @@ class Game(ABC):
                             move = player.make_move(self.board, self.should_ask_for_origin_move)
 
                         # Apply the player's move to the board since we now know it was legal
-                        repeat = self.make_move(move, player)
+                        should_ask_for_move = self.make_move(move, player)
                         is_game_over_yet = self.is_game_over()
 
-                        # If the game has ended, break the player loop which in turn will break the game loop
+                        # Don't ask for another move, as the game is over
                         if is_game_over_yet:
                             break
+
+                    # If the game has ended, break the player loop which in turn will break the game loop
+                    if is_game_over_yet:
+                        break
 
             # Leave every concrete game to decide what it needs to do after a game is completed
             self.finish_game()
